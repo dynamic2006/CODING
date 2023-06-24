@@ -1,0 +1,13 @@
+*
+!*.cpp
+!*.h
+!*.in
+!*.c
+!*.hpp
+!*.py
+!*.json
+!.vscode
+!*.java
+!*.jar
+
+
