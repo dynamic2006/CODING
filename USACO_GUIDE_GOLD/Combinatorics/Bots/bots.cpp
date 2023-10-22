@@ -44,7 +44,7 @@ int main(){
     fillFac();
     fillInv();
 
-    //freopen("bots.in" , "r" , stdin);
+    freopen("bots.in" , "r" , stdin);
 
     ll n; cin >> n;
     ll ans = choose(2*(n+1) , n+1);
