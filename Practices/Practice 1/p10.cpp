@@ -14,6 +14,7 @@ class student {
             cout << "Score is: " << score << endl;
         }
         ~student(){delete[] name;}
+
     private:
         char* name;
         double score;

@@ -43,9 +43,12 @@ int main(){
     for(auto a : alibis){
         long long time = a.time;
         if(time <= *prev(grazingTimes.end())){
+            //finds next closest grazing time with lower bound
             long long nextTime = *grazingTimes.lower_bound(time);
             Grazing nextGrazing = grazingLocations[nextTime];
             long long nextX = nextGrazing.x, nextY = nextGrazing.y, timeDiff = nextTime - time;
+            //cow are not required to travel along grid lines
+            //we use the pythagorean thm to check if the cow can get to the next grazing in time
             long long dist = (nextX - a.x)*(nextX - a.x) + (nextY - a.y)*(nextY - a.y);
             if(dist > timeDiff*timeDiff) continue;
         }

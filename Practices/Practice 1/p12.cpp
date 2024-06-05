@@ -10,19 +10,30 @@ class mystring{
             while(*(ptr++) != '\0'){
                 length++;
             }
+
             str = new char[length+1];
             for(int i=0; i<length; i++){
-                *(str+i) = *(source+i);
+                str[i] = source[i];
             }
-            *(str+length) = '\0';
+            // for(int i=0; i<length; i++){
+            //     *(str+i) = *(source+i);
+            // }
+            // *(str+length) = '\0';
+            cout << "WORKS!" << endl;
         };
         mystring(const mystring& s){
-            length = s.length;
-            str = new char[length+1];
+            // length = s.length; //can access private vars within class
+            // str = new char[length+1];
+            // for(int i=0; i<length; i++){
+            //     *(str+i) = *(s.str+i);
+            // }
+            // *(str+length) = '\0';
+            length = s.size();
+            str = new char[length];
             for(int i=0; i<length; i++){
-                *(str+i) = *(s.str+i);
+                *(str+i) = *(s.str + i);
             }
-            *(str+length) = '\0';  
+            cout << "Also Works" << endl;
         };
         mystring& operator=(const mystring& s){
             delete this->str;
@@ -56,6 +67,9 @@ int main() {
     }
     *s[0] = "Review"; //uses the assignment operator to assign *s[0] to "Review"
     *s[1] = "Session";
+
+    mystring og("juju");
+    mystring cpy = og;
 
     cout << s[0]->c_str() << " " << s[1]->c_str() << endl;
 

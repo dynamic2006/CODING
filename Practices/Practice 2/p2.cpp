@@ -21,11 +21,17 @@ class LinkedList{
                 head = current;
             }
             else{
-                Node* ptr = head;
-                while (ptr->next != nullptr){
-                    ptr = ptr->next;
+                // Node* current = head;
+                // while(current != nullptr){
+                //     current = current->next;
+                // }
+                // current = new Node(value, nullptr);
+
+                Node* temp = head;
+                while(temp->next != nullptr){
+                    temp = temp->next;
                 }
-                ptr->next = current;
+                temp->next = new Node(value, nullptr);
             }
         }
         

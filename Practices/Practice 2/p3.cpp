@@ -57,12 +57,7 @@ int Stack::top() const {
 }
 
 bool Stack::empty() const {
-    if (head == nullptr){
-        return true;
-    }
-    else{
-        return false;
-    }
+    return head == nullptr;
 }
 
 void Stack::pop() {
@@ -83,6 +78,12 @@ Stack::Stack(const Stack& s) { //ask dad to check
         return;
     }
     this->head = new Node(s.head->value, nullptr);
+
+    // Node* cur = s.head->next;
+    // while(cur != nullptr){
+    //     push(cur->value);
+    //     cur = cur->next;
+    // }
 
     Node* prev = this->head;
     Node* ptr = s.head->next;
