@@ -29,7 +29,7 @@ long long binarySearch(long long lo , long long hi){
 }
 
 int main(){
-    //freopen("table.in" , "r" , stdin);
+    freopen("table.in" , "r" , stdin);
 
     cin >> n;
 
