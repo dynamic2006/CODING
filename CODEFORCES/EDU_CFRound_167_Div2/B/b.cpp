@@ -3,32 +3,25 @@ using namespace std;
 
 int main()
 {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
     //freopen("b.in" , "r" , stdin);
+
     int t; cin >> t;
-    for(int tc=0; tc<t; tc++){
+    while(t--){
         string a, b;
-        cin >> a; cin >> b;
+        cin >> a >> b;
 
-        int maxSubSeq = 0;
-        int subseq = 0, lastidx = -1;
-        //brute force this thang
-        for(int bi=0; bi<b.size(); bi++){
-            if(maxSubSeq == a.size()) break;
-            int prevSubSeq = subseq;
-            for(int ai=lastidx+1; ai<a.size(); ai++){
-                if(a[ai] == b[bi]){
-                    lastidx = ai;
-                    subseq++;
-                    break;
-                }
+        int maxCommon = 0;
+        for(int i=0; i<b.size(); i++){
+            int ai = 0, bi = i;
+            while(ai<a.size() && bi<b.size()){
+                if(a[ai] == b[bi]) bi++;
+                ai++;
             }
-            maxSubSeq = max(maxSubSeq, subseq);
-            if(prevSubSeq == subseq){
-                subseq = 0;
-                lastidx = -1;
-            }
+            maxCommon = max(maxCommon, bi - i);
         }
-
-        cout << a.size() + b.size() - maxSubSeq << endl;
+        cout << a.size() + b.size() - maxCommon << endl;
     }
 }
