@@ -1,25 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+typedef long long ll;
+
 int main()
 {
-    freopen("b.in" , "r" , stdin);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    //freopen("b.in" , "r" , stdin);
 
     int t; cin >> t;
-    for(int i=0; i<t; i++){
-        int x, y, k; cin >> x >> y >> k;
-        while(k>=0){
-            int d = x/y;
+    while(t--){
+        ll x, y, ops; cin >> x >> y >> ops;
+        x++; ops--;
+        do{
             int r = x%y;
-            if(y-r > k){
-                cout << x + k << endl;
-                break;
+            if(r == 0) x /= y;
+            else{
+                x += min(ops, y-r);
+                ops -= min(ops, y-r);
             }
+        }while(x>1 && ops>0);
 
-            k -= (y-r);
-            x = d+1;
+        while(x%y == 0) x /= y;
+
+        if(ops>0){
+            int block = y-1;
+            ops = ops%block;
+            x += ops;
         }
+        cout << x << endl;
     }
-
     
 }
