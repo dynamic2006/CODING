@@ -1,33 +1,71 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+typedef long long ll;
+
+const ll MAXNUM = 1e6;
+
+struct Weapon
+{
+    ll cost, ingotLoss;
+};
+bool cmp(Weapon& a, Weapon& b){
+    if(a.ingotLoss == b.ingotLoss) return a.cost < b.cost;
+    return a.ingotLoss < b.ingotLoss;
+}
+
 int main()
 {
-    freopen("d.in" , "r" , stdin);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    int n, m; cin >> n >> m;
-    vector<pair<int, int>> weaponTypes(n);
-    vector<int> metalTypes(m);
+    //freopen("d.in" , "r" , stdin);
 
-    for(int i=0; i<n; i++){
-        int a, b; cin >> a >> b;
-        weaponTypes[i].first = a-b; //positive diff cost
-        weaponTypes[i].second = -a; //negative of input cost
+    ll n, m; cin >> n >> m;
+    vector<Weapon> weaponsog(n); //first is return, second is initial cost
+    vector<ll> metals(m);
+
+    for(ll i=0; i<n; i++) cin >> weaponsog[i].cost;
+    for(ll i=0; i<n; i++){
+        ll ingots; cin >> ingots;
+        weaponsog[i].ingotLoss = weaponsog[i].cost - ingots;
     }
-    sort(weaponTypes.begin(), weaponTypes.end());
+    for(ll i=0; i<m; i++) cin >> metals[i];
 
-    for(int i=0; i<m; i++) cin >> metalTypes[i];
-    sort(metalTypes.begin() , metalTypes.end(), greater<int>());
+    sort(weaponsog.begin() , weaponsog.end() , cmp);
 
-    int ans = 0;
-    int mi = 0, wi = 0;
-    while(mi < m){
-        auto it = lower_bound(weaponTypes.begin(), weaponTypes.end())
-        while(-weaponTypes[wi].second <= metalTypes[mi]){
-            ans += 2;
-            metalTypes[mi] -= weaponTypes[wi].first;
+    // ll safe = 0;
+    //plz plz don't inf loop me
+    vector<Weapon> weapons;
+    weapons.push_back(weaponsog[0]);
+    for(ll i=1; i<n; i++){
+        if(weaponsog[i].cost < weapons.back().cost) weapons.push_back(weaponsog[i]);
+    }
+
+    vector<ll> costs;
+    for(auto x : weapons) costs.push_back(-x.cost);
+
+    vector<ll> dp(MAXNUM+1,0);
+    for(ll i=1; i<=MAXNUM; i++){
+        auto it = lower_bound(costs.begin(), costs.end(), -i);
+        if(it != costs.end()){
+            ll idx = it - costs.begin();
+            dp[i] = 1 + dp[i - weapons[idx].ingotLoss];
         }
-        else if(mi)
+        else dp[i] = 0;
     }
 
+    ll totalexp = 0;
+    for(ll i=0; i<m; i++){
+        if(metals[i] > MAXNUM){
+            metals[i] -= weapons[0].cost;
+            ll div = weapons[0].cost - weapons[0].ingotLoss;
+            totalexp += 2*(metals[i]/weapons[0].ingotLoss + 1);
+            metals[i] %= weapons[0].ingotLoss;
+            metals[i] += weapons[0].cost - weapons[0].ingotLoss;
+        }
+        totalexp += 2*dp[metals[i]];
+    }
+
+    cout << totalexp << endl;
 }
