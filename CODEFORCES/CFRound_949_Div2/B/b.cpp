@@ -3,38 +3,26 @@ using namespace std;
 
 int main()
 {
-    // freopen("b.in" , "r" , stdin);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    vector<int> nums, prevNums;
+    //freopen("b.in" , "r" , stdin);
 
-    for(int i=0; i<=50; i++){
-        nums.push_back(i);
-        prevNums.push_back(i);
-    }
+    int t; cin >> t;
+    while(t--){
+        int n, m; cin >> n >> m;
+        int left = max(0, n-m);
+        int right = n+m;
+        
+        int ans = 0;
+        for(int i=0; i<32; i++){
+            if(left & (1<<i) || right & (1<<i)) ans |= (1<<i);
+            else if(i<31 && left>>(i+1) != right>>(i+1)) ans |= (1<<i);
+            else ans &= ~(1<<i);
 
-    for(int r=0; r<5; r++){
-        for(int i=0; i<=50; i++){
-            if(i == 0) nums[i] = prevNums[i] | prevNums[i+1];
-            else nums[i] = prevNums[i-1] | prevNums[i] | prevNums[i+1];
-            cout << i << " " << nums[i] << endl;
+            //cout << ans << " ";
         }
-        for(int i=0; i<=50; i++){
-            prevNums[i] = nums[i];
-        }
-        cout << endl;
+        //cout << endl;
+        cout << ans << endl;
     }
-    
-    // int t; cin >> t;
-    // while(t--){
-    //     int n, m; cin >> n >> m;
-
-    //     if(m == 0){
-    //         cout << n << endl;
-    //         continue;
-    //     }
-
-    //     int k = 1;
-    //     while(k < n+m) k = k*2 + 1;
-    //     cout << k << endl;
-    // }
 }
