@@ -1,0 +1,14 @@
+*[^.]
+!*/
+!*.cpp
+!*.h
+*.in
+!*.c
+!*.hpp
+!*.py
+*.json
+!*.java
+!*.jar
+!.gitignore
+
+
