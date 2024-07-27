@@ -6,7 +6,7 @@
 !*.c
 !*.hpp
 !*.py
-*.json
+*.vscode
 !*.java
 !*.jar
 !.gitignore
