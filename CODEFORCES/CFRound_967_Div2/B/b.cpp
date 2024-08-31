@@ -15,7 +15,7 @@ int main() {
     while(t--){
         int n; cin >> n;
         if(n == 1) cout << 1 << endl;
-        else if(n == 2) cout << -1 << endl;
+        else if(n % 2 == 0) cout << -1 << endl;
         else{
             for(int i=1; i<=n/2; i++) cout << i << " " << n+1-i << " ";
             if(n%2 == 1) cout << (n+1)/2;
