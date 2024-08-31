@@ -9,51 +9,46 @@ int main() {
     cin.tie(0);
     cout.tie(0);
 
-    freopen("f.in", "r", stdin);
+    // freopen("f.in", "r", stdin);
 
-    int t; cin >> t;
+    ll t; cin >> t;
     while(t--){
-        int n, k; cin >> n >> k;
-        vector<pair<int, int>> rects(n);
-        for(int i=0; i<n; i++){
-            int a, b; cin >> a >> b;
+        ll n, k; cin >> n >> k;
+        vector<pair<ll, ll>> rects(n);
+        for(ll i=0; i<n; i++){
+            ll a, b; cin >> a >> b;
+            rects[i].first = min(a,b) * max(a,b);
             rects[i].second = min(a,b);
-            rects[i].first = min(a,b) + max(a,b);
         }
         sort(rects.begin(), rects.end());
 
         ll ops = 0;
-        int unusedRect = -1;
-        for(int i=n-1; i>=0; i--){
-            if(k >= rects[i].first){
-                k -= rects[i].first;
-                ops += (rects[i].first);
+        ll unusedRect = -1;
+        for(ll i=0; i<n; i++){
+            ll minSide = rects[i].second;
+            ll maxSide = rects[i].first/rects[i].second;
+            if(k >= minSide + maxSide){
+                k -= (minSide + maxSide);
+                ops += rects[i].first;
             }
-            else if(unusedRect == n) unusedRect = i;
-            else if(rects[i].second < rects[unusedRect].second) unusedRect = i;
+            else if(unusedRect == -1 || rects[unusedRect].second > rects[i].second){
+                unusedRect = i;
+            }
         }
         if(k > 0 && unusedRect == -1){
             cout << -1 << endl;
             continue;
         }
 
+        while(k > 0){
+            ll minSide = rects[unusedRect].second;
+            ll maxSide = rects[unusedRect].first / rects[unusedRect].second;
 
-
-        ll ops = 0;
-        for(int i=0; i<n; i++){
-            if(rects[i].second < rects[i].first){
-                
-            }
-            else{
-                int sub = min(rects[i].second+1, k);
-            }
-            int minSide = min(rects[i].first, rects[i].second);
-            int sub = min(rects[i].second+1, k);
-            k -= sub;
-            if(sub == rects[i].second+1) ops += sub-1;
-            else ops += sub;
+            k--; ops += minSide;
+            maxSide--;
+            rects[unusedRect].first = minSide*maxSide;
+            rects[unusedRect].second = min(minSide, maxSide);
         }
-        if(k > 0) cout << -1 << endl;
-        else cout << ops << endl;
+        cout << ops << endl;
     }
 }
