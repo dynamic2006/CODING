@@ -4,47 +4,35 @@ using namespace std;
 
 typedef long long ll;
 
-int n, k;
-ll sum;
-
-bool valid(ll len)
-{
-    ll rem = sum%len;
-    if(k >= len - rem) return true;
-    return false;
-}
-
-ll binarySearch(ll lo, ll hi)
-{
-    hi++;
-    while(lo<hi){
-        ll mid = lo + (hi-lo)/2;
-        if(valid(mid)) hi = mid;
-        else lo = mid+1;
-    }
-    return lo;
-}
-
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
 
-    freopen("input.in", "r", stdin);
+    // freopen("input.in", "r", stdin);
 
     int t; cin >> t;
     while(t--){
-        cin >> n >> k;
-        sum = 0;
+        ll n, k; cin >> n >> k;
         vector<ll> a(n);
-        for(int i=0; i<n; i++){
+
+        ll sum = 0;
+        for(ll i=0; i<n; i++){
             cin >> a[i];
             sum += a[i];
         }
 
-        ll minLen = binarySearch(*max_element(a.begin(), a.end()), sum);
-        cout << "MINLEN" << minLen << endl;
-        cout << min((ll)n, (sum+k)/minLen) << endl;
+        ll maxSize = *max_element(a.begin() , a.end());
+
+        for(ll i=n; i>=1; i--){
+            //test this as the height
+            ll hi = (sum+k)/i;
+
+            if(maxSize <= hi && hi*i >= sum && hi*i <= sum+k){
+                cout << i << endl;
+                break;
+            }
+        }
     }
 
 }
