@@ -10,4 +10,6 @@ int main() {
     cout.tie(0);
 
     freopen("input.in", "r", stdin);
+
+    
 }

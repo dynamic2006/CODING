@@ -10,4 +10,7 @@ int main() {
     cout.tie(0);
 
     freopen("input.in", "r", stdin);
+
+    double x_1, y_1, x_2, y_2, a;
+    
 }
