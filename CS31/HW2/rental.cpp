@@ -20,6 +20,8 @@ int main() {
     getline(cin, custName);
     // cout << custName << endl;
 
+    cin.ignore(10000, '\n');
+
     cout << "Luxury car? (y/n): ";
     getline(cin, custName);
 
