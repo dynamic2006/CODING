@@ -23,7 +23,7 @@ int main() {
     cin.ignore(10000, '\n');
 
     cout << "Luxury car? (y/n): ";
-    getline(cin, custName);
+    getline(cin, lux);
 
     cout << "Starting month (1=Jan, 2=Feb, etc.): ";
     cin >> startMonth;
