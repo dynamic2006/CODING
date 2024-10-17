@@ -21,7 +21,7 @@ int main() {
     // cout << custName << endl;
 
     cout << "Luxury car? (y/n): ";
-    cin >> lux;
+    getline(cin, custName);
 
     cout << "Starting month (1=Jan, 2=Feb, etc.): ";
     cin >> startMonth;
