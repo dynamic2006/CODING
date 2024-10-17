@@ -48,7 +48,7 @@ int main() {
         //first <=100 miles
         if(odoDiff <= 100){
             charge += (0.33)*(odoDiff);
-            cout << charge << endl;
+            cout << fixed << setprecision(2) << charge << endl;
             return 0;
         }
         
@@ -68,7 +68,7 @@ int main() {
         odoDiff -= sub;
         charge += (0.21)*(odoDiff);
 
-        cout << charge << endl;
+        cout << fixed << setprecision(2) << charge << endl;
 
     }
 }
