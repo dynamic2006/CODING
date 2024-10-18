@@ -20,5 +20,9 @@ int main() {
         cin >> grid[i];
     }
 
+    //bfs tree with connected components
+    //ans is depth of the tree
+    //can treat as edges with 0 weight to same component
+    //1 weight to edge to diff component
     
 }
