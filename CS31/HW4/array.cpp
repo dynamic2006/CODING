@@ -160,6 +160,12 @@ int main()
 
     assert(separate(h, 7, "jd") == 3);
 
+    //custom tests
+    string s[5] = {"", "", " ", "", ""};
+    cout << separate(s, 5, "") << endl;
+    for(int i=0; i<5; i++) cout << s[i].size() << " ";
+    cout << endl;
+
     cout << "All tests succeeded" << endl;
 }
 
