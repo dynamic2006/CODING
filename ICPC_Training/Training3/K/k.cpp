@@ -12,11 +12,27 @@ int main() {
     freopen("input.in", "r", stdin);
 
     string s; cin >> s;
-    vector<map<int, double>> dp(8);
+    vector<unordered_map<int, double>> dp(8);
+
 
     // cout << "CHeck" << endl;
 
+    int startCounts[8] = {24, 4, 4, 4, 4, 4, 4, 4};
+    for(int i=0; i<7; i++){
+        if(s[i] == 'A') startCounts[1]--;
+        else if(s[i] - '0' >= 2 && s[i] - '0' <= 7) startCounts[s[i] - '0']--;
+        else startCounts[0]--;
+    }
+
     for(int i=0; i<(1<<7); i++){
+        int pref = 0;
+        for(int x=0; x<=startCounts[0]; x++){
+            for(int v=1; v<8; v++){
+                for(int y=0; y<startCounts[v]; y++){
+                    pref = pref << 3;
+                }
+            }
+        }
         dp[__popcount(i)][i] = (double)0;
     }
 
