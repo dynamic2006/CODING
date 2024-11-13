@@ -11,7 +11,7 @@ const char WORDFILENAME[] = "words.txt";
 int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
 {
     if(nWords <= 0 || wordnum < 0 || wordnum >= nWords) return -1;
-    int stars = 0, planets = 0;
+    int stars, planets;
     //while stars is not the length of the target word:
     //ask for trial word and get input
     //process input, if not valid output correct message and continue
@@ -24,18 +24,71 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
     cout << n << " " << words[wordnum] << endl;
     while(stars != n)
     {
+        stars = 0; planets = 0;
+
         char trialWord[101];
         cout << "Trial word: ";
         cin >> trialWord;
+        cout << "word: " << trialWord << endl;
 
+        //correct length check
         int m = strlen(trialWord);
         if(m < 4 || m > 6){
             cout << "Your trial word must be a word of 4 to 6 lower case letters." << endl;
             continue;
         }
 
-        cout << trialWord << endl;
+        //correct syntax (lowercase letters) check
+        bool validSyntax = true;
+        for(int i=0; i<m; i++){
+            if(!islower(trialWord[i])){
+                cout << "Your trial word must be a word of 4 to 6 lower case letters." << endl;
+                validSyntax = false;
+                break;
+            }
+        }
+        if(!validSyntax) continue;
+
+        //valid word in bank check
+        bool validWord = false;
+        for(int i=0; i<nWords; i++){
+            if(strcmp(trialWord, words[i]) == 0){
+                validWord = true;
+                break;
+            }
+        }
+        // if(!validWord){
+        //     cout << "I don't know that word." << endl;
+        //     continue;
+        // }
+
+        //valid input -> consider as an attempt
+        //calculate stars and planets
         attempts++;
+
+        int alphaTrial[27] = {}, alphaTarget[27] = {};
+        for(int i=0; i<MAXWORDLEN; i++){
+            alphaTrial[trialWord[i] - 'a']++;
+            alphaTarget[words[wordnum][i] - 'a']++;
+        }
+
+        //every star is a planet
+        for(int i=0; i<MAXWORDLEN; i++){
+            if(trialWord[i] == words[wordnum][i] && trialWord[i] != '\0'){
+                //found star
+                // cout << "Star at " << i << " " << trialWord[i] << " same as " << words[wordnum][i] << endl;
+                alphaTrial[trialWord[i] - 'a']--;
+                alphaTarget[words[wordnum][i] - 'a']--;
+                stars++;
+            }
+        }
+        if(stars == n) break;
+
+        for(int i=0; i<26; i++){
+            planets += min(alphaTrial[i], alphaTarget[i]);
+        }
+
+        cout << "Stars: " << stars << ", Planets: " << planets << endl;
     }
     // cout << n << " " << words[wordnum] << endl;
     // int input; cin >> input;
@@ -51,7 +104,7 @@ int main()
         return 0;
     }
 
-    cout << "How many rounds do you want to play? " << endl;
+    cout << "How many rounds do you want to play? ";
     int rounds; cin >> rounds;
     if(rounds <= 0){
         cout << "The number of rounds must be positive." << endl;
