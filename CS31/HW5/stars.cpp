@@ -6,6 +6,8 @@
 using namespace std;
 
 const int MAXWORDS = 8000;
+const int MAXUSERLEN = 100;
+const int ALPHASIZE = 26;
 const char WORDFILENAME[] = "words.txt";
 
 int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
@@ -26,14 +28,14 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
     {
         stars = 0; planets = 0;
 
-        char trialWord[101];
+        char trialWord[MAXUSERLEN+1];
         cout << "Trial word: ";
-        cin >> trialWord;
+        cin.getline(trialWord, MAXUSERLEN+1);
         cout << "word: " << trialWord << endl;
 
         //correct length check
         int m = strlen(trialWord);
-        if(m < 4 || m > 6){
+        if(m < MINWORDLEN || m > MAXWORDLEN){
             cout << "Your trial word must be a word of 4 to 6 lower case letters." << endl;
             continue;
         }
@@ -57,16 +59,17 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
                 break;
             }
         }
-        // if(!validWord){
-        //     cout << "I don't know that word." << endl;
-        //     continue;
-        // }
+        //comment this out to test any string as trial word
+        if(!validWord){
+            cout << "I don't know that word." << endl;
+            continue;
+        }
 
         //valid input -> consider as an attempt
         //calculate stars and planets
         attempts++;
 
-        int alphaTrial[27] = {}, alphaTarget[27] = {};
+        int alphaTrial[ALPHASIZE] = {}, alphaTarget[ALPHASIZE] = {};
         for(int i=0; i<MAXWORDLEN; i++){
             alphaTrial[trialWord[i] - 'a']++;
             alphaTarget[words[wordnum][i] - 'a']++;
