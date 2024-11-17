@@ -23,7 +23,7 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
     int n = strlen(words[wordnum]);
     int attempts = 0;
     cout << "The secret word is " << n << " letters long." << endl;
-    cout << n << " " << words[wordnum] << endl;
+    // cout << n << " " << words[wordnum] << endl;
     while(stars != n)
     {
         stars = 0; planets = 0;
