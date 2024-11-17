@@ -22,7 +22,7 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
     //else break
     int n = strlen(words[wordnum]);
     int attempts = 0;
-    cout << "The secret word is " << n << " letters long." << endl;
+    // cout << "The secret word is " << n << " letters long." << endl;
     // cout << n << " " << words[wordnum] << endl;
     while(stars != n)
     {
@@ -31,7 +31,7 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
         char trialWord[MAXUSERLEN+1];
         cout << "Trial word: ";
         cin.getline(trialWord, MAXUSERLEN+1);
-        cout << "word: " << trialWord << endl;
+        // cout << "word: " << trialWord << endl;
 
         //correct length check
         int m = strlen(trialWord);
@@ -71,8 +71,8 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
 
         int alphaTrial[ALPHASIZE] = {}, alphaTarget[ALPHASIZE] = {};
         for(int i=0; i<MAXWORDLEN; i++){
-            alphaTrial[trialWord[i] - 'a']++;
-            alphaTarget[words[wordnum][i] - 'a']++;
+            if(isalpha(trialWord[i])) alphaTrial[trialWord[i] - 'a']++;
+            if(isalpha(words[wordnum][i]))alphaTarget[words[wordnum][i] - 'a']++;
         }
 
         //every star is a planet
@@ -123,6 +123,8 @@ int main()
         cout << endl;
         cout << "Round " << i << endl;
         int idx = randInt(0, n-1);
+        int targetWordLen = strlen(w[idx]);
+        cout << "The secret word is " << targetWordLen << " letters long." << endl;
         int attempts = runOneRound(w, n, idx);
         
         if(attempts == 1){
