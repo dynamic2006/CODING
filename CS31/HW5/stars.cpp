@@ -9,7 +9,7 @@ using namespace std;
 const int MAXWORDS = 8000;
 const int MAXUSERLEN = 100;
 const int ALPHASIZE = 26;
-const char WORDFILENAME[] = "testwords.txt";
+const char WORDFILENAME[] = "words.txt";
 
 //runs one round of gameplay
 int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
