@@ -11,6 +11,7 @@ const int MAXUSERLEN = 100;
 const int ALPHASIZE = 26;
 const char WORDFILENAME[] = "words.txt";
 
+//runs one round of gameplay
 int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
 {
     if(nWords <= 0 || wordnum < 0 || wordnum >= nWords) return -1; //valid parameters check
@@ -101,6 +102,7 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
     return attempts;
 }
 
+//main loop
 int main()
 {
     //load word bank and check that it's not empty
