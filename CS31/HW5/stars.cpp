@@ -9,7 +9,7 @@ using namespace std;
 const int MAXWORDS = 8000;
 const int MAXUSERLEN = 100;
 const int ALPHASIZE = 26;
-const char WORDFILENAME[] = "words.txt";
+const char WORDFILENAME[] = "testwords.txt";
 
 //runs one round of gameplay
 int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
@@ -74,15 +74,13 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
         //alphabet letter occurrence arrays
         //use to calculate planets later on
         int alphaTrial[ALPHASIZE] = {}, alphaTarget[ALPHASIZE] = {};
-        for(int i=0; i<MAXWORDLEN; i++){
-            //increase occurrences if valid letter
-            if(isalpha(trialWord[i])) alphaTrial[trialWord[i] - 'a']++;
-            if(isalpha(words[wordnum][i]))alphaTarget[words[wordnum][i] - 'a']++;
-        }
+        for(int i=0; i<m; i++) alphaTrial[trialWord[i] - 'a']++;
+        for(int i=0; i<n; i++) alphaTarget[words[wordnum][i] - 'a']++;
 
         //every star is a planet
         for(int i=0; i<MAXWORDLEN; i++){
-            if(trialWord[i] == words[wordnum][i] && trialWord[i] != '\0'){
+            if(trialWord[i] == '\0' || words[wordnum][i] == '\0') break;
+            if(trialWord[i] == words[wordnum][i]){
                 //found star
                 //star takes priority over planet, decrease occurrences
                 alphaTrial[trialWord[i] - 'a']--;
