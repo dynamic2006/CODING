@@ -91,7 +91,7 @@ int runOneRound(const char words[][MAXWORDLEN+1], int nWords, int wordnum)
         if(stars == n && m == n) break; //user found target word
 
         //calculate planets with occurrence arrays
-        for(int i=0; i<26; i++){
+        for(int i=0; i<ALPHASIZE; i++){
             planets += min(alphaTrial[i], alphaTarget[i]);
         }
 
