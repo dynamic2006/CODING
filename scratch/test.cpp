@@ -1,34 +1,22 @@
 #include <iostream>
-#include <string>
 using namespace std;
+
+void removeS(char* str)
+{
+    char* temp = str;
+    while(*str != 0){
+        if(*str != 'S' && *str != 's'){
+            *temp = *str;
+            temp++;
+        }
+        str++;
+    }
+    *temp = '\0';
+}
 
 int main()
 {
-    int i = 0,value = 0;
-    for( i = 0 ; i < 5 ; i++ ){
-        cout << "cases ";
-        switch( i ) {
-        case 1: 
-            value = i + 1;
-            cout << "1:" << i << " ";
-        case 2: 
-            value = value - 1;
-            cout << "2:" << i << " ";
-        case 3: 
-            value = value + 1;
-            cout << "3:" << i << " ";
-        case 4: 
-            value = value + 2;
-            cout << "4:" << i << " ";
-        case 5:
-            cout << "5:" << i << " ";
-            value = value - 1;
-        default: 
-            cout << "default:" << i << " ";
-            value = value + 1;
-        }
-        cout << "applied" << endl;
-        cout << value << endl;
-    }
-    cout << value << endl;
-} 
+    char msg[50] = "She'll blossom like a massless princess.";
+    removeS(msg);
+    cout << msg;  // prints   he'll bloom like a male prince.
+}
