@@ -55,7 +55,7 @@ class Bee
     Room* m_room;
     int   m_row;
     int   m_col;
-    bool swatted = false;
+    bool swatted;
 };
 
 class Player
@@ -155,8 +155,9 @@ Bee::Bee(Room* rp, int r, int c)
     m_room = rp;
     m_row = r;
     m_col = c;
-      // TODO: You might discover something to do here to compete the
+      // CHECK: You might discover something to do here to compete the
       // initialization of a Bee.
+    swatted = false;
 }
 
 int Bee::row() const
@@ -177,16 +178,16 @@ void Bee::move()
       // CHECK:  Attempt to move in direction dir; if bee can't move, don't move.
     switch (dir){
         case UP:
-            if(row()-1 >= 0) m_row--;
+            if(row() > 1) m_row--;
             break;
         case DOWN:
-            if(row()+1 < m_room->rows()) m_row++;
+            if(row() < m_room->rows()) m_row++;
             break;
         case LEFT:
-            if(col()-1 >= 0) m_col--;
+            if(col() > 1) m_col--;
             break;
         case RIGHT:
-            if(col()+1 < m_room->cols()) m_col++;
+            if(col() < m_room->cols()) m_col++;
             break;
         default:
             break;
@@ -201,40 +202,40 @@ bool Bee::getSwatted(int dir)  // return true if dies
       // (since it survived the swat).  Otherwise, do not move, but return
       // true (since stepping back causes the bee to die by smashing into a
       // wall of the room).
-    return false;  // This implementation compiles, but is incorrect.
 
     if(swatted) return true;
+    else swatted = true;
     switch (dir){
         case UP:
-            if(row()-1 >= 0){
+            if(row() > 1){
                 m_row--;
                 return false;
             }
             else return true;
             break;
         case DOWN:
-            if(row()+1 < m_room->rows()){
+            if(row() < m_room->rows()){
                 m_row++;
                 return false;
             }
             else return true;
             break;
         case LEFT:
-            if(col()-1 >= 0){
+            if(col() > 1){
                 m_col--;
                 return false;
             }
             else return true;
             break;
         case RIGHT:
-            if(col()+1 < m_room->cols()){
+            if(col() < m_room->cols()){
                 m_col++;
                 return false;
             }
             else return true;
             break;
         default:
-            cerr << "NOT SUPPOSED TO BE HERE..." << endl;
+            cerr << "ERROR" << endl;
             return false;
     }
 }
@@ -289,6 +290,19 @@ void Player::moveOrSwat(int dir)
       // TODO:  If there is a bee adjacent to the player in the direction
       // dir, swat it.  Otherwise, move the player to that position if
       // possible (i.e., if the move would not be out of the room).
+    switch(dir){
+        case UP:
+            if(m_room->swatBeeAt(row(), col(), dir));
+            break;
+        case DOWN:
+            break;
+        case LEFT:
+            break;
+        case RIGHT:
+            break;
+        default:
+            break;
+    }
 }
 
 bool Player::isDead() const
@@ -321,7 +335,10 @@ Room::Room(int nRows, int nCols)
 
 Room::~Room()
 {
-      // TODO:  Delete the player and all remaining dynamically allocated bees.
+      //CHECK:  Delete the player and all remaining dynamically allocated bees.
+    delete m_player;
+    for(int i=0; i<m_nBees; i++) delete m_bees[i];
+
 }
 
 int Room::rows() const
@@ -364,28 +381,28 @@ bool Room::determineNewPosition(int& r, int& c, int dir) const
     {
         // CHECK:  Implement the behavior if dir is UP.
       case UP:
-        if(r-1 < 0) return false;
+        if(r <= 1) return false;
         else{
             r--;
             return true;
         }
         break;
       case DOWN:
-        if(r+1 >= rows()) return false;
+        if(r >= rows()) return false;
         else{
             r++;
             return true;
         }
         break;
       case LEFT:
-        if(c-1 < 0) return false;
+        if(c <= 1) return false;
         else{
             c--;
             return true;
         }
         break;
       case RIGHT:
-        if(c+1 >= cols()) return false;
+        if(c >= cols()) return false;
         else{
             c++;
             return true;
@@ -413,7 +430,7 @@ void Room::display() const
       // Indicate each bee's position
     for(r=0; r<rows(); r++){
         for(c=0; c<cols(); c++){
-            int beesHere = numBeesAt(r,c);
+            int beesHere = numBeesAt(r+1,c+1);
             if(beesHere == 1) grid[r][c] = 'B';
             else if(beesHere >= 2 && beesHere <= 8) grid[r][c] = '0' + beesHere;
             else if(beesHere >= 9) grid[r][c] = '9';
@@ -466,8 +483,12 @@ bool Room::addBee(int r, int c)
       // in this scenario (which won't occur in this game):  MAXBEES
       // are added, then some are destroyed, then more are added.
 
-      // TODO:  Implement this.
-    return false;  // This implementation compiles, but is incorrect.
+      // CHECK:  Implement this.
+    if(m_nBees == MAXBEES) return false;
+    Bee* babyBee = new Bee(this, r, c);
+    m_bees[m_nBees] = babyBee;
+    m_nBees++;
+    return true;
 }
 
 bool Room::addPlayer(int r, int c)
@@ -483,20 +504,34 @@ bool Room::addPlayer(int r, int c)
 
 bool Room::swatBeeAt(int r, int c, int dir)
 {
-      // TODO:  Swat one bee at row r, column c if at least one is at
+      // CHECK:  Swat one bee at row r, column c if at least one is at
       // that position.  If the bee does not survive the swat, destroy the
       // bee object, removing it from the room, and return true.  Otherwise,
       // return false (no bee at (r,c), or bee didn't die).
-    return false;  // This implementation compiles, but is incorrect.
+    for(int i=0; i<beeCount(); i++){
+        if(m_bees[i]->row() == r && m_bees[i]->col() == c){
+            if(m_bees[i]->getSwatted(dir)){
+                //delete bee
+                delete m_bees[i];
+                m_bees[i] = m_bees[beeCount()-1];
+                m_bees[beeCount()-1] = nullptr;
+                m_nBees--;
+            }
+            else return false;
+        }
+    }
+    return false;
 }
 
 bool Room::moveBees()
 {
     for (int k = 0; k < m_nBees; k++)
     {
-      // TODO:  Have the k-th bee in the room make one move.
+      // CHECK:  Have the k-th bee in the room make one move.
       //        If that move results in that bee being in the same
       //        position as the player, the player dies.
+      m_bees[k]->move();
+      if(m_bees[k]->row() == player()->row() && m_bees[k]->col() == player()->col()) m_player->setDead();
     }
 
       // return true if the player is still alive, false otherwise
@@ -623,7 +658,8 @@ int main()
 {
       // Create a game
       // Use this instead to create a mini-game:   Game g(3, 4, 2);
-    Game g(7, 8, 25);
+    // Game g(7, 8, 25);
+    Game g(3,4,2);
 
       // Play the game
     g.play();
