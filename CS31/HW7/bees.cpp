@@ -13,8 +13,6 @@
 #include <random>
 #include <utility>
 #include <cstdlib>
-#include <type_traits>
-#include <cassert>
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
@@ -141,8 +139,10 @@ void clearScreen();
 //  Bee implementation
 ///////////////////////////////////////////////////////////////////////////
 
+//bee constructor
 Bee::Bee(Room* rp, int r, int c)
 {
+    //valid arguments check
     if (rp == nullptr)
     {
         cout << "***** A bee must be created in some Room!" << endl;
@@ -154,22 +154,22 @@ Bee::Bee(Room* rp, int r, int c)
              << c << ")!" << endl;
         exit(1);
     }
+    //initialize attributes with passed-in parameters
     m_room = rp;
     m_row = r;
     m_col = c;
-      // CHECK: You might discover something to do here to compete the
-      // initialization of a Bee.
+    //initialize each bee to unswatted
     swatted = false;
 }
 
 int Bee::row() const
 {
-    return m_row;
+    return m_row; //returns row that bee is at
 }
 
 int Bee::col() const
 {
-    return m_col;
+    return m_col; //returns col that bee is at
 }
 
 void Bee::move()
@@ -177,7 +177,7 @@ void Bee::move()
       // Attempt to move in a random direction; if bee can't move, don't move
     int dir = randInt(0, NUMDIRS-1);  // dir is now UP, DOWN, LEFT, or RIGHT
 
-      // CHECK:  Attempt to move in direction dir; if bee can't move, don't move.
+      //Attempt to move in direction dir; if bee can't move, don't move.
     switch (dir){
         case UP:
             if(row() > 1) m_row--;
@@ -198,15 +198,16 @@ void Bee::move()
 
 bool Bee::getSwatted(int dir)  // return true if dies
 {
-      // CHECK:  If the bee has been swatted once before, return true
+      // If the bee has been swatted once before, return true
       // (since a second swat kills a bee).  Otherwise, if possible,
       // move the bee one position in direction dir and return false
       // (since it survived the swat).  Otherwise, do not move, but return
       // true (since stepping back causes the bee to die by smashing into a
       // wall of the room).
 
-    if(swatted) return true;
-    else swatted = true;
+    if(swatted) return true; //second swat kills bee
+    else swatted = true; //first swat
+    //check if bee gets knock back or dies by wall
     switch (dir){
         case UP:
             if(row() > 1){
@@ -237,7 +238,6 @@ bool Bee::getSwatted(int dir)  // return true if dies
             else return true;
             break;
         default:
-            cerr << "ERROR" << endl;
             return false;
     }
 }
@@ -248,6 +248,7 @@ bool Bee::getSwatted(int dir)  // return true if dies
 
 Player::Player(Room* rp, int r, int c)
 {
+    //valid args check
     if (rp == nullptr)
     {
         cout << "***** The player must be created in some Room!" << endl;
@@ -259,6 +260,7 @@ Player::Player(Room* rp, int r, int c)
              << "," << c << ")!" << endl;
         exit(1);
     }
+    //initialize attributes
     m_room = rp;
     m_row = r;
     m_col = c;
@@ -268,17 +270,17 @@ Player::Player(Room* rp, int r, int c)
 
 int Player::row() const
 {
-    return m_row;
+    return m_row; //return row player is currently at
 }
 
 int Player::col() const
 {
-    return m_col;
+    return m_col; //return col player is currently at
 }
 
 int Player::age() const
 {
-    return m_age;
+    return m_age; //return player's age
 }
 
 void Player::stand()
@@ -289,16 +291,16 @@ void Player::stand()
 void Player::moveOrSwat(int dir)
 {
     m_age++;
-      // TODO:  If there is a bee adjacent to the player in the direction
+      // If there is a bee adjacent to the player in the direction
       // dir, swat it.  Otherwise, move the player to that position if
       // possible (i.e., if the move would not be out of the room).
     switch(dir){
         case UP:
-            if(row()-1 <= 0) break;
+            if(row()-1 < 1) break; //invalid position
             if(m_room->numBeesAt(row()-1, col()) > 0){
-                m_room->swatBeeAt(row()-1, col(), dir);
+                m_room->swatBeeAt(row()-1, col(), dir); //if atleast one bee, swat it
             }
-            else m_row--;
+            else m_row--; //else no bees, move player
             break;
         case DOWN:
             if(row()+1 > m_room->rows()) break;
@@ -308,7 +310,7 @@ void Player::moveOrSwat(int dir)
             else m_row++;
             break;
         case LEFT:
-            if(col()-1 <= 0) break;
+            if(col()-1 < 1) break;
             if(m_room->numBeesAt(row(), col()-1) > 0){
                 m_room->swatBeeAt(row(), col()-1, dir);
             }
@@ -328,7 +330,7 @@ void Player::moveOrSwat(int dir)
 
 bool Player::isDead() const
 {
-    return m_dead;
+    return m_dead; //returns true if the player is dead
 }
 
 void Player::setDead()
@@ -342,12 +344,14 @@ void Player::setDead()
 
 Room::Room(int nRows, int nCols)
 {
+    //valid args check
     if (nRows <= 0  ||  nCols <= 0  ||  nRows > MAXROWS  ||  nCols > MAXCOLS)
     {
         cout << "***** Room created with invalid size " << nRows << " by "
              << nCols << "!" << endl;
         exit(1);
     }
+    //initialize attributes
     m_rows = nRows;
     m_cols = nCols;
     m_player = nullptr;
@@ -356,20 +360,21 @@ Room::Room(int nRows, int nCols)
 
 Room::~Room()
 {
-      //CHECK:  Delete the player and all remaining dynamically allocated bees.
+      //Delete the player and all remaining dynamically allocated bees.
     delete m_player;
+    //active bees are stored consecutively in first m_nbees positions of m_bees array
     for(int i=0; i<m_nBees; i++) delete m_bees[i];
 
 }
 
 int Room::rows() const
 {
-    return m_rows;
+    return m_rows; //returns number of rows in the room
 }
 
 int Room::cols() const
 {
-    return m_cols;
+    return m_cols; //returns number of cols in the room
 }
 
 Player* Room::player() const
@@ -384,8 +389,9 @@ int Room::beeCount() const
 
 int Room::numBeesAt(int r, int c) const
 {
-      // CHECK:  Return the number of bees at row r, column c.
+      //Return the number of bees at row r, column c.
     int total = 0;
+    //go through m_bees array and count each bee whose row=r and col=c
     for(int i=0; i<beeCount(); i++){
         if(m_bees[i]->row() == r && m_bees[i]->col() == c) total++;
     }
@@ -394,42 +400,40 @@ int Room::numBeesAt(int r, int c) const
 
 bool Room::determineNewPosition(int& r, int& c, int dir) const
 {
-      // CHECK:  If a move from row r, column c, one step in direction dir
+      // If a move from row r, column c, one step in direction dir
       // would go out of the room, leave r and c unchanged and return false.
       // Otherwise, set r or c so that row r, column c, is now the new
       // position resulting from the proposed move, and return true.
     switch (dir)
     {
-        // CHECK:  Implement the behavior if dir is UP.
       case UP:
-        if(r <= 1) return false;
+        if(r-1 < 1) return false;
         else{
             r--;
             return true;
         }
         break;
       case DOWN:
-        if(r >= rows()) return false;
+        if(r+1 > rows()) return false;
         else{
             r++;
             return true;
         }
         break;
       case LEFT:
-        if(c <= 1) return false;
+        if(c-1 < 1) return false;
         else{
             c--;
             return true;
         }
         break;
       case RIGHT:
-        if(c >= cols()) return false;
+        if(c+1 > cols()) return false;
         else{
             c++;
             return true;
         }
         break;
-        // CHECK:  Implement the other directions.
       default:
         return false;
     }
@@ -451,10 +455,10 @@ void Room::display() const
       // Indicate each bee's position
     for(r=0; r<rows(); r++){
         for(c=0; c<cols(); c++){
-            int beesHere = numBeesAt(r+1,c+1);
-            if(beesHere == 1) grid[r][c] = 'B';
-            else if(beesHere >= 2 && beesHere <= 8) grid[r][c] = '0' + beesHere;
-            else if(beesHere >= 9) grid[r][c] = '9';
+            int beesHere = numBeesAt(r+1,c+1); //careful with the shifted r and c
+            if(beesHere == 1) grid[r][c] = 'B'; //put B for 1 bee
+            else if(beesHere >= 2 && beesHere <= 8) grid[r][c] = '0' + beesHere; //put x for 2<=x<=8 bees
+            else if(beesHere >= 9) grid[r][c] = '9'; //put 9 if >=9 bees
         }
     }
 
@@ -504,8 +508,8 @@ bool Room::addBee(int r, int c)
       // in this scenario (which won't occur in this game):  MAXBEES
       // are added, then some are destroyed, then more are added.
 
-      // CHECK:  Implement this.
-    if(m_nBees == MAXBEES) return false;
+    if(m_nBees == MAXBEES) return false; //array is full
+    //else create new bee and stick it at the end of m_bees array
     Bee* babyBee = new Bee(this, r, c);
     m_bees[m_nBees] = babyBee;
     m_nBees++;
@@ -525,33 +529,36 @@ bool Room::addPlayer(int r, int c)
 
 bool Room::swatBeeAt(int r, int c, int dir)
 {
-      // CHECK:  Swat one bee at row r, column c if at least one is at
+      // Swat one bee at row r, column c if at least one is at
       // that position.  If the bee does not survive the swat, destroy the
       // bee object, removing it from the room, and return true.  Otherwise,
       // return false (no bee at (r,c), or bee didn't die).
     for(int i=0; i<beeCount(); i++){
         if(m_bees[i]->row() == r && m_bees[i]->col() == c){
+            //found a bee here
             if(m_bees[i]->getSwatted(dir)){
                 //delete bee
                 delete m_bees[i];
-                m_bees[i] = m_bees[beeCount()-1];
+                if(i != beeCount()-1) m_bees[i] = m_bees[beeCount()-1]; //fill gap in array with last element
                 m_bees[beeCount()-1] = nullptr;
-                m_nBees--;
+                m_nBees--; //one less bee
+                return true; //R.I.P bee
             }
-            else return false;
+            else return false; //bee didn't die
         }
     }
-    return false;
+    return false; //no bees found
 }
 
 bool Room::moveBees()
 {
     for (int k = 0; k < m_nBees; k++)
     {
-      // CHECK:  Have the k-th bee in the room make one move.
-      //        If that move results in that bee being in the same
-      //        position as the player, the player dies.
+      // Have the k-th bee in the room make one move.
+      // If that move results in that bee being in the same
+      // position as the player, the player dies.
       m_bees[k]->move();
+      //if bee ends up in same spot as player, player dies
       if(m_bees[k]->row() == player()->row() && m_bees[k]->col() == player()->col()) m_player->setDead();
     }
 
@@ -672,8 +679,54 @@ int randInt(int min, int max)
 }
 
 ///////////////////////////////////////////////////////////////////////////
-//  main()
+//  TESTING
 ///////////////////////////////////////////////////////////////////////////
+
+#include <type_traits>
+#include <cassert>
+
+#define CHECKTYPE(c, f, r, a)  \
+    static_assert(std::is_same<decltype(&c::f), r (c::*)a>::value, \
+       "FAILED: You changed the type of " #c "::" #f);  \
+    { [[gnu::unused]] auto p = static_cast<r(c::*)a>(&c::f); }
+
+void thisFunctionWillNeverBeCalled()
+{
+      // If the student deleted or changed the interfaces to the public
+      // functions, this won't compile.  (This uses magic beyond the scope
+      // of CS 31.)
+
+    Bee(static_cast<Room*>(0), 1, 1);
+    CHECKTYPE(Bee, row, int, () const);
+    CHECKTYPE(Bee, col, int, () const);
+    CHECKTYPE(Bee, move, void, ());
+    CHECKTYPE(Bee, getSwatted, bool, (int));
+
+    Player(static_cast<Room*>(0), 1, 1);
+    CHECKTYPE(Player, row, int, () const);
+    CHECKTYPE(Player, col, int, () const);
+    CHECKTYPE(Player, age, int, () const);
+    CHECKTYPE(Player, isDead, bool, () const);
+    CHECKTYPE(Player, stand, void, ());
+    CHECKTYPE(Player, moveOrSwat, void, (int));
+    CHECKTYPE(Player, setDead, void, ());
+
+    Room(1, 1);
+    CHECKTYPE(Room, rows, int, () const);
+    CHECKTYPE(Room, cols, int, () const);
+    CHECKTYPE(Room, player, Player*, () const);
+    CHECKTYPE(Room, beeCount, int, () const);
+    CHECKTYPE(Room, numBeesAt, int, (int, int) const);
+    CHECKTYPE(Room, determineNewPosition, bool, (int&, int&, int) const);
+    CHECKTYPE(Room, display, void, () const);
+    CHECKTYPE(Room, addBee, bool, (int, int));
+    CHECKTYPE(Room, addPlayer, bool, (int, int));
+    CHECKTYPE(Room, swatBeeAt, bool, (int, int, int));
+    CHECKTYPE(Room, moveBees, bool, ());
+
+    Game(1, 1, 1);
+    CHECKTYPE(Game, play, void, ());
+}
 
 void doBasicTests()
 {
@@ -742,6 +795,10 @@ void doBasicTests()
     cout << "Passed all basic tests" << endl;
 }
 
+///////////////////////////////////////////////////////////////////////////
+//  main()
+///////////////////////////////////////////////////////////////////////////
+
 int main()
 {
     // doBasicTests(); // Remove this line after completing test.
@@ -804,48 +861,3 @@ void clearScreen()  // will just write a newline in an Xcode output window
 }
 
 #endif
-
-/////////////////
-
-#define CHECKTYPE(c, f, r, a)  \
-    static_assert(std::is_same<decltype(&c::f), r (c::*)a>::value, \
-       "FAILED: You changed the type of " #c "::" #f);  \
-    { [[gnu::unused]] auto p = static_cast<r(c::*)a>(&c::f); }
-
-void thisFunctionWillNeverBeCalled()
-{
-      // If the student deleted or changed the interfaces to the public
-      // functions, this won't compile.  (This uses magic beyond the scope
-      // of CS 31.)
-
-    Bee(static_cast<Room*>(0), 1, 1);
-    CHECKTYPE(Bee, row, int, () const);
-    CHECKTYPE(Bee, col, int, () const);
-    CHECKTYPE(Bee, move, void, ());
-    CHECKTYPE(Bee, getSwatted, bool, (int));
-
-    Player(static_cast<Room*>(0), 1, 1);
-    CHECKTYPE(Player, row, int, () const);
-    CHECKTYPE(Player, col, int, () const);
-    CHECKTYPE(Player, age, int, () const);
-    CHECKTYPE(Player, isDead, bool, () const);
-    CHECKTYPE(Player, stand, void, ());
-    CHECKTYPE(Player, moveOrSwat, void, (int));
-    CHECKTYPE(Player, setDead, void, ());
-
-    Room(1, 1);
-    CHECKTYPE(Room, rows, int, () const);
-    CHECKTYPE(Room, cols, int, () const);
-    CHECKTYPE(Room, player, Player*, () const);
-    CHECKTYPE(Room, beeCount, int, () const);
-    CHECKTYPE(Room, numBeesAt, int, (int, int) const);
-    CHECKTYPE(Room, determineNewPosition, bool, (int&, int&, int) const);
-    CHECKTYPE(Room, display, void, () const);
-    CHECKTYPE(Room, addBee, bool, (int, int));
-    CHECKTYPE(Room, addPlayer, bool, (int, int));
-    CHECKTYPE(Room, swatBeeAt, bool, (int, int, int));
-    CHECKTYPE(Room, moveBees, bool, ());
-
-    Game(1, 1, 1);
-    CHECKTYPE(Game, play, void, ());
-}
