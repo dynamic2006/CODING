@@ -6,10 +6,12 @@ typedef long long ll;
 
 void dfs(int cur, vector<vector<int>>& adj, vector<int>& ans)
 {
-    for(auto &next : adj[cur]){
+    int tot = 0;
+    for(auto& next : adj[cur]){
         dfs(next, adj, ans);
-        ans[cur] += ans[next] + 1;
+        tot += ans[next]+1;
     }
+    ans[cur] = tot;
 }
 
 int main() {
@@ -18,6 +20,7 @@ int main() {
     cout.tie(0);
 
     // freopen("input.in", "r", stdin);
+
     int n; cin >> n;
     vector<vector<int>> adj(n+1, vector<int>());
     for(int i=2; i<=n; i++){
@@ -30,5 +33,4 @@ int main() {
 
     for(int i=1; i<=n; i++) cout << ans[i] << " ";
     cout << endl;
-
 }

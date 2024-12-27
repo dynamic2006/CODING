@@ -20,21 +20,21 @@ int main() {
     // freopen("input.in", "r", stdin);
 
     int n; cin >> n;
-    vector<bool> vis(n+1, false); vis[0] = true;
     vector<vector<int>> adj(n+1, vector<int>());
+    vector<bool> vis(n+1, false);
     for(int i=1; i<=n; i++){
-        int a; cin >> a;
-        adj[i].push_back(a);
-        adj[a].push_back(i);
+        int p; cin >> p;
+        adj[i].push_back(p);
+        adj[p].push_back(i);
     }
 
-    int ans = 0;
+    int trees = 0;
     for(int i=1; i<=n; i++){
         if(!vis[i]){
             dfs(i, adj, vis);
-            ans++;
+            trees++;
         }
     }
+    cout << trees << endl;
 
-    cout << ans << endl;
 }
