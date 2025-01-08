@@ -1,3 +1,11 @@
+#ifndef ROOM_INCLUDED
+#define ROOM_INCLUDED
+
+#include "globals.h"
+
+class Player;
+class Bee;
+
 class Room
 {
   public:
@@ -27,3 +35,5 @@ class Room
     Bee*    m_bees[MAXBEES];
     int     m_nBees;
 };
+
+#endif //ROOM_INCLUDED

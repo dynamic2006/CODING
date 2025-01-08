@@ -1,3 +1,10 @@
+#include "Room.h"
+#include "Bee.h"
+#include "Player.h"
+#include "globals.h"
+#include <iostream>
+using namespace std;
+
 Room::Room(int nRows, int nCols)
 {
     if (nRows <= 0  ||  nCols <= 0  ||  nRows > MAXROWS  ||  nCols > MAXCOLS)

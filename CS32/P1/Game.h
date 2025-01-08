@@ -1,3 +1,8 @@
+#ifndef GAME_INCLUDED
+#define GAME_INCLUDED
+
+class Room;
+
 class Game
 {
   public:
@@ -11,3 +16,5 @@ class Game
   private:
     Room* m_room;
 };
+
+#endif //GAME_INCLUDED

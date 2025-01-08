@@ -1,3 +1,10 @@
+#include "globals.h"
+#include "Game.h"
+#include "Room.h"
+#include "Player.h"
+#include <iostream>
+using namespace std;
+
 Game::Game(int rows, int cols, int nBees)
 {
     if (nBees < 0)

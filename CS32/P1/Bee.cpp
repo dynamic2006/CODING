@@ -1,4 +1,8 @@
+#include "globals.h"
 #include "Bee.h"
+#include "Room.h"
+#include <iostream>
+using namespace std;
 
 Bee::Bee(Room* rp, int r, int c)
 {

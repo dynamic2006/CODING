@@ -1,3 +1,7 @@
+#ifndef PLAYER_INCLUDED
+#define PLAYER_INCLUDED
+
+class Room;
 class Player
 {
   public:
@@ -22,3 +26,5 @@ class Player
     int   m_age;
     bool  m_dead;
 };
+
+#endif //PLAYER_INCLUDED

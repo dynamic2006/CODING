@@ -1,3 +1,8 @@
+#include "Player.h"
+#include "Room.h"
+#include <iostream>
+using namespace std;
+
 Player::Player(Room* rp, int r, int c)
 {
     if (rp == nullptr)
