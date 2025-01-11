@@ -2,6 +2,7 @@
 #define ROOM_INCLUDED
 
 #include "globals.h"
+#include "History.h"
 
 class Player;
 class Bee;
@@ -21,6 +22,7 @@ class Room
     int     numBeesAt(int r, int c) const;
     bool    determineNewPosition(int& r, int& c, int dir) const;
     void    display() const;
+    History& history();
 
         // Mutators
     bool addBee(int r, int c);
@@ -34,6 +36,7 @@ class Room
     Player* m_player;
     Bee*    m_bees[MAXBEES];
     int     m_nBees;
+    History m_history;
 };
 
 #endif //ROOM_INCLUDED

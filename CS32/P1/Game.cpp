@@ -59,7 +59,7 @@ void Game::play()
     while ( ! player->isDead()  &&  m_room->beeCount() > 0)
     {
         cout << endl;
-        cout << "Move (u/d/l/r/q or nothing): ";
+        cout << "Move (u/d/l/r/h/q or nothing): ";
         string action;
         getline(cin,action);
         if (action.size() == 0)  // player stands
@@ -73,6 +73,13 @@ void Game::play()
                 continue;
               case 'q':
                 return;
+              case 'h':
+                m_room->history().display();
+                cout << "Press enter to continue";
+                cin.ignore(10000, '\n');
+                clearScreen();
+                m_room->display();
+                continue;
               case 'u':
               case 'd':
               case 'l':

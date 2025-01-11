@@ -1,6 +1,7 @@
 #ifndef BEE_INCLUDED
 #define BEE_INCLUDED
 
+
 class Room;
 
 class Bee

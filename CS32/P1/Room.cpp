@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-Room::Room(int nRows, int nCols)
+Room::Room(int nRows, int nCols): m_history(nRows, nCols)
 {
     if (nRows <= 0  ||  nCols <= 0  ||  nRows > MAXROWS  ||  nCols > MAXCOLS)
     {
@@ -131,6 +131,11 @@ void Room::display() const
         if (m_player->isDead())
             cout << "The player is dead." << endl;
     }
+}
+
+History &Room::history()
+{
+    return m_history;
 }
 
 bool Room::addBee(int r, int c)

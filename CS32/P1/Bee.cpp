@@ -50,5 +50,6 @@ bool Bee::getSwatted(int dir)  // return true if dies
         m_health = 0;
         return true;
     }
+    m_room->history().record(m_row, m_col);
     return false;
 }
