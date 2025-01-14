@@ -75,7 +75,7 @@ void Game::play()
                 return;
               case 'h':
                 m_room->history().display();
-                cout << "Press enter to continue";
+                cout << "Press enter to continue.";
                 cin.ignore(10000, '\n');
                 clearScreen();
                 m_room->display();
