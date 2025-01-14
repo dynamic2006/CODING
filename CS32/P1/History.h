@@ -13,11 +13,7 @@ class History
     private:
         int m_rows;
         int m_cols;
-        int recordGrid[MAXROWS][MAXCOLS];
+        int recordGrid[MAXROWS][MAXCOLS]; //store knockback history
 };
 
 #endif
-
-//finish this part (new feature)
-//also check project requirements -- esp the parts about not putting unnecessary #includes
-//i think the #includes part only applies to headers but double check that anyways

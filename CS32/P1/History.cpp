@@ -16,22 +16,20 @@ History::History(int nRows, int nCols)
 
 bool History::record(int r, int c)
 {
-    if(r < 1 || r > m_rows || c < 1 || c > m_cols) return false;
-    recordGrid[r-1][c-1]++;
+    if(r < 1 || r > m_rows || c < 1 || c > m_cols) return false; //invalid r,c
+    recordGrid[r-1][c-1]++; //record this knockback
     return true;
 }
 
 void History::display() const
 {
-    // Position (row,col) of room coordinate system is represented in
-    // the array element grid[row-1][col-1]
     char grid[MAXROWS][MAXCOLS];
 
     for (int r = 0; r < m_rows; r++){
         for (int c = 0; c < m_cols; c++){
             grid[r][c] = '.';
             //if there is atleast one bee, draw corresponding character in grid
-            if(recordGrid[r][c] >= 26) grid[r][c] = 'Z';
+            if(recordGrid[r][c] >= 26) grid[r][c] = 'Z'; //for >= 26 bees
             else if(recordGrid[r][c] > 0) grid[r][c] = ('A' + (recordGrid[r][c] - 1));
         }
     }
