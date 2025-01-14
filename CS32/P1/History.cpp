@@ -26,20 +26,21 @@ void History::display() const
     // Position (row,col) of room coordinate system is represented in
     // the array element grid[row-1][col-1]
     char grid[MAXROWS][MAXCOLS];
-    int r, c;
-    
-    for (r = 0; r < m_rows; r++){
-        for (c = 0; c < m_cols; c++){
+
+    for (int r = 0; r < m_rows; r++){
+        for (int c = 0; c < m_cols; c++){
             grid[r][c] = '.';
-            if(recordGrid[r][c] > 0) grid[r][c] = ('A' + (recordGrid[r][c] - 1));
+            //if there is atleast one bee, draw corresponding character in grid
+            if(recordGrid[r][c] >= 26) grid[r][c] = 'Z';
+            else if(recordGrid[r][c] > 0) grid[r][c] = ('A' + (recordGrid[r][c] - 1));
         }
     }
 
     // Draw the grid
     clearScreen();
-    for (r = 0; r < m_rows; r++)
+    for (int r = 0; r < m_rows; r++)
     {
-        for (c = 0; c < m_cols; c++)
+        for (int c = 0; c < m_cols; c++)
             cout << grid[r][c];
         cout << endl;
     }
