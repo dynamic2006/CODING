@@ -1,6 +1,6 @@
 #ifndef TURNOUTLIST_INCLUDED
 #define TURNOUTLIST_INCLUDED
-#include "Sequence.h"
+#include "newSequence.h"
 #include <limits>
 
 const unsigned long NO_TURNOUTS = std::numeric_limits<unsigned long>::max();

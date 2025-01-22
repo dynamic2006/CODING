@@ -1,8 +1,31 @@
-#include "Sequence.h"
+#include "newSequence.h"
 
-Sequence::Sequence()
+Sequence::Sequence(int n)
 {
-    n = 0;
+    this->n = n;
+    seq = new ItemType[n];
+}
+
+Sequence::~Sequence()
+{
+    delete[] seq;
+}
+
+//deep-copy -- check if we r supposed to do shallow cpy instead
+Sequence::Sequence(const Sequence &other)
+{
+    this->n = other.n;
+    seq = new ItemType[n];
+    for(int i=0; i<n; i++) seq[i] = other.seq[i];
+}
+
+Sequence& Sequence::operator=(const Sequence& other)
+{
+    delete[] seq;
+    this->n = other.n;
+    seq = new ItemType[n];
+    for(int i=0; i<n; i++) seq[i] = other.seq[i];
+    return *this;
 }
 
 bool Sequence::empty() const

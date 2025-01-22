@@ -9,7 +9,11 @@ using ItemType = unsigned long;
 class Sequence
 {
   public:
-    Sequence();    // Create an empty sequence (i.e., one whose size() is 0).
+    Sequence(int n = DEFAULT_MAX_ITEMS);    // Create an empty sequence (i.e., one whose size() is 0).
+    ~Sequence();
+    Sequence(const Sequence &other);
+    Sequence& operator=(const Sequence& other);
+    
     bool empty() const;  // Return true if the sequence is empty, otherwise false.
     int size() const;    // Return the number of items in the sequence.
     int insert(int pos, const ItemType& value);
@@ -62,7 +66,7 @@ class Sequence
 
   private:
     int n;
-    ItemType seq[DEFAULT_MAX_ITEMS];
+    ItemType* seq;
 };
 
 #endif //SEQUENCE_INCLUDED
