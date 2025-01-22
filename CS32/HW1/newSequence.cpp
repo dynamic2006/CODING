@@ -2,6 +2,7 @@
 
 Sequence::Sequence(int n)
 {
+    if(n < 0) exit(-1);
     this->n = n;
     seq = new ItemType[n];
 }

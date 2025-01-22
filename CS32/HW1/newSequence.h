@@ -1,5 +1,5 @@
-#ifndef SEQUENCE_INCLUDED
-#define SEQUENCE_INCLUDED
+#ifndef NEWSEQUENCE_INCLUDED
+#define NEWSEQUENCE_INCLUDED
 
 #include <string>
 
@@ -69,4 +69,4 @@ class Sequence
     ItemType* seq;
 };
 
-#endif //SEQUENCE_INCLUDED
+#endif //NEWSEQUENCE_INCLUDED
