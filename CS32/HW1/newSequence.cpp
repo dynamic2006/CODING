@@ -23,6 +23,8 @@ Sequence::Sequence(const Sequence &other)
 
 Sequence& Sequence::operator=(const Sequence& other)
 {
+    if(this == &other) return *this;
+    
     delete[] seq;
     this->maxSize = other.maxSize;
     this->n = other.n;
