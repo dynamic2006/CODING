@@ -6,7 +6,7 @@ TurnoutList::TurnoutList()
 
 bool TurnoutList::add(unsigned long turnout)
 {
-    if(0 <= turnout && turnout <= 1800){
+    if(size() < DEFAULT_MAX_ITEMS && 0 <= turnout && turnout <= 1800){
         s.insert(turnout);
         return true;
     }
@@ -35,7 +35,7 @@ unsigned long TurnoutList::minimum() const
 
 unsigned long TurnoutList::maximum() const
 {
-    unsigned long maxval = -1;
+    unsigned long maxval = 0;
     for(int i=0; i<s.size(); i++){
         unsigned long cur; s.get(i, cur);
         if(cur > maxval) maxval = cur;

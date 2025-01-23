@@ -9,7 +9,7 @@ using ItemType = unsigned long;
 class Sequence
 {
   public:
-    Sequence(int n = DEFAULT_MAX_ITEMS);    // Create an empty sequence (i.e., one whose size() is 0).
+    Sequence(int maxSize = DEFAULT_MAX_ITEMS);    // Create an empty sequence (i.e., one whose size() is 0).
     ~Sequence();
     Sequence(const Sequence &other);
     Sequence& operator=(const Sequence& other);
@@ -65,6 +65,7 @@ class Sequence
       // Exchange the contents of this sequence with the other one.
 
   private:
+    int maxSize;
     int n;
     ItemType* seq;
 };

@@ -1,10 +1,11 @@
 #include "newSequence.h"
 
-Sequence::Sequence(int n)
+Sequence::Sequence(int maxSize)
 {
-    if(n < 0) exit(-1);
-    this->n = n;
-    seq = new ItemType[n];
+    this->maxSize = maxSize;
+    if(maxSize < 0) exit(-1);
+    n = 0;
+    seq = new ItemType[maxSize];
 }
 
 Sequence::~Sequence()
@@ -12,19 +13,20 @@ Sequence::~Sequence()
     delete[] seq;
 }
 
-//deep-copy -- check if we r supposed to do shallow cpy instead
 Sequence::Sequence(const Sequence &other)
 {
+    this->maxSize = other.maxSize;
     this->n = other.n;
-    seq = new ItemType[n];
+    seq = new ItemType[maxSize];
     for(int i=0; i<n; i++) seq[i] = other.seq[i];
 }
 
 Sequence& Sequence::operator=(const Sequence& other)
 {
     delete[] seq;
+    this->maxSize = other.maxSize;
     this->n = other.n;
-    seq = new ItemType[n];
+    seq = new ItemType[maxSize];
     for(int i=0; i<n; i++) seq[i] = other.seq[i];
     return *this;
 }
@@ -41,7 +43,7 @@ int Sequence::size() const
 
 int Sequence::insert(int pos, const ItemType &value)
 {
-    if(size() >= DEFAULT_MAX_ITEMS || pos < 0 || pos > size()) return -1;
+    if(size() >= maxSize || pos < 0 || pos > size()) return -1;
     for(int i=size(); i>pos; i--) seq[i] = seq[i-1];
     seq[pos] = value; n++;
     return pos;
@@ -49,7 +51,7 @@ int Sequence::insert(int pos, const ItemType &value)
 
 int Sequence::insert(const ItemType &value)
 {
-    if(size() >= DEFAULT_MAX_ITEMS) return -1;
+    if(size() >= maxSize) return -1;
     for(int i=0; i<size(); i++){
         if(value <= seq[i]) return insert(i, value);
     }
@@ -98,12 +100,15 @@ int Sequence::find(const ItemType &value) const
 
 void Sequence::swap(Sequence &other)
 {
-    for(int i=0; i<DEFAULT_MAX_ITEMS; i++){
-        ItemType temp = other.seq[i];
-        other.seq[i] = seq[i];
-        seq[i] = temp;
-    }
+    ItemType* tmp = other.seq;
+    other.seq = this->seq;
+    this->seq = tmp;
+
+    int tm = other.maxSize;
+    other.maxSize = this->maxSize;
+    this->maxSize = tm;
+
     int tn = other.n;
-    other.n = n;
-    n = tn;
+    other.n = this->n;
+    this->n = tn;
 }
