@@ -187,3 +187,43 @@ void Sequence::setup()
     //Note: head and tail values not initialized -- look into this
     n = 0;
 }
+
+//Sequence Algorithms
+
+int subsequence(const Sequence &seq1, const Sequence &seq2)
+{
+    for(int i=0; i<seq1.size(); i++){
+        int ti = i;
+        bool found = true;
+        for(int j=0; j<seq2.size(); j++){
+            ItemType v1, v2;
+            seq1.get(ti, v1);
+            seq2.get(j, v2);
+            if(ti >= seq1.size() || v1 != v2){
+                found = false;
+                break;
+            }
+            ti++;
+        }
+        if(found) return i;
+    }
+    return -1;
+
+}
+
+void zipper(const Sequence &seq1, const Sequence &seq2, Sequence &result)
+{
+    int ptr1 = 0, ptr2 = 0;
+    int curPos = 0;
+    ItemType curValue;
+    while(ptr1 < seq1.size() || ptr2 < seq2.size()){
+        if(ptr1 < seq1.size()){
+            seq1.get(ptr1++, curValue);
+            result.insert(curPos++, curValue);
+        }
+        if(ptr2 < seq2.size()){
+            seq2.get(ptr2++, curValue);
+            result.insert(curPos++, curValue);
+        }   
+    }
+}

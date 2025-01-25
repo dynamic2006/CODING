@@ -38,4 +38,8 @@ class Sequence
         void setup();
 };
 
+int subsequence(const Sequence& seq1, const Sequence& seq2);
+
+void zipper(const Sequence& seq1, const Sequence& seq2, Sequence& result);
+
 #endif //SEQUENCE_INCLUDED
