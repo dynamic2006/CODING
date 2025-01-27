@@ -34,7 +34,7 @@ class Sequence
 
         Node* getNodeAt(int pos) const;
         void addNode(Node* &a, Node* &b, const ItemType &value);
-        void deleteNode(Node*& cur);
+        void deleteNode(Node* cur);
         void setup();
 };
 

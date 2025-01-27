@@ -18,19 +18,11 @@ Sequence::Sequence(Sequence &other)
 
 Sequence::~Sequence()
 {
-    cout << "DELETING NOW" << endl;
-    cout << "VAL " << head->next->val << endl;
-    if(head->next == tail) cout << "HERES THE BUGGER" << endl;
-    else cout << "HERE?" << endl;
-    while(head->next != nullptr && head->next != tail){
-        cout << "Okay " << head->next->val << " ";
+    while(head->next != tail){
         deleteNode(head->next);
     }
-    cout << "HEAD NEXT" << endl;
     delete head;
-    cout << "TAIL NEXT" << endl;
     delete tail;
-    cout << "CLEAN UP DONE" << endl;
 }
 
 Sequence& Sequence::operator=(const Sequence &other)
@@ -75,11 +67,7 @@ int Sequence::insert(const ItemType &value)
     while(temp != tail && value > temp->val){
         pos++; temp = temp->next;
     }
-    if(temp->prev == head) cout << "YA" << endl;
-    if(temp == tail) cout << "YAYA" << endl;
     addNode(temp->prev, temp, value);
-    cout << "DONE" << endl;
-    if(head->next == tail) cout << "WTF" << endl;
     return pos;
 }
 
@@ -185,7 +173,7 @@ void Sequence::addNode(Node*& a, Node*& b, const ItemType &value)
     n++;
 }
 
-void Sequence::deleteNode(Node*& cur)
+void Sequence::deleteNode(Node* cur)
 {
     cur->prev->next = cur->next;
     cur->next->prev = cur->prev;
