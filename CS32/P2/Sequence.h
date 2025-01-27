@@ -1,13 +1,15 @@
 #ifndef SEQUENCE_INCLUDED
 #define SEQUENCE_INCLUDED
 
-using ItemType = int;
+#include <iostream>
+#include <string>
+using ItemType = std::string;
 
 class Sequence
 {
     public:
         Sequence();
-        Sequence(Sequence& other);
+        Sequence(const Sequence& other);
         ~Sequence();
         Sequence& operator=(const Sequence& other);
 

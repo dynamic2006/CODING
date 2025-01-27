@@ -1,13 +1,11 @@
 #include "Sequence.h"
-#include <iostream>
-using namespace std;
 
 Sequence::Sequence()
 {
     setup();
 }
 
-Sequence::Sequence(Sequence &other)
+Sequence::Sequence(const Sequence &other)
 {
     setup();
     for(int i=0; i<other.size(); i++){
