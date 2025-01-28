@@ -30,6 +30,25 @@ int main()
     assert(!s1.get(-1, x) && !s1.get(s1.size(), x) && x == def);//test get for invalid pos
     assert(s1.set(1, "") && s1.get(1, x) && x == ""); //test set for empty string
     assert(!s1.set(-1, "Bad Pos") && !s1.set(s1.size(), "Bad Pos") && s1.size() == 5); //test set for invalid pos
+    assert(!s1.erase(-1) && !s1.erase(s1.size())); //test erase for nonvalid pos
+
+    x = def;
+    assert(s1.erase(0) && s1.get(0,x) && x == ""); //test erase for empty string + first element
+    assert(s1.erase(s1.size()-1) && s1.get(s1.size()-1, x) && x == "A"); //test erase for last element
+    assert(s1.remove("") == 2 && s1.size() == 1); //test remove for empty string + multiple copies
+    assert(s1.remove("A") == 1 && s1.empty() && s1.size() == 0); //test remove for normal string
+    assert(s1.remove("") == 0 && s1.size() == 0); //test remove for empty list
+
+    x = def;
+    assert(!s1.get(0, x) && s1.set(0,x) && x == def);//test get/set for empty list
+
+    s1.insert(0,"A"); s1.insert(1,"B"); s1.insert(2,"C"); s1.insert(3,"D");
+    s1.insert(3,"A"); s1.insert(0, "C"); s1.insert(2,"D");
+    //s1 = {C, A, D, B, C, A, D}
+    assert(s1.insert("D") == 2 && s1.erase(2)); //test insert for multiple occurences already existing
+    assert(s1.find("D") == 2 && s1.find("C") == 0); //testing find for multiple target occurences
+    
+
 
     // assert(s.empty());
     // assert(s.size() == 0);
