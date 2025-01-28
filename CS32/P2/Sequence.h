@@ -1,7 +1,6 @@
 #ifndef SEQUENCE_INCLUDED
 #define SEQUENCE_INCLUDED
 
-#include <iostream>
 #include <string>
 using ItemType = std::string;
 
@@ -35,7 +34,7 @@ class Sequence
         int n;
 
         Node* getNodeAt(int pos) const;
-        void addNode(Node* &a, Node* &b, const ItemType &value);
+        void addNode(Node* a, Node* b, const ItemType &value);
         void deleteNode(Node* cur);
         void setup();
 };

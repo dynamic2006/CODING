@@ -71,7 +71,7 @@ int Sequence::insert(const ItemType &value)
 
 bool Sequence::erase(int pos)
 {
-    if(pos < 0 || pos > size()) return false;
+    if(pos < 0 || pos >= size()) return false;
     Node* temp = getNodeAt(pos);
     deleteNode(temp);
     return true;
@@ -159,7 +159,7 @@ Sequence::Node* Sequence::getNodeAt(int pos) const
 
 // CAUTION!!! CHECK THAT NODE*& a syntax is correct -- we want to update the node
 // so we pass the node pointer by reference -- there should be a hw that discussed this
-void Sequence::addNode(Node*& a, Node*& b, const ItemType &value)
+void Sequence::addNode(Node* a, Node* b, const ItemType &value)
 {
     Node* cur = new Node();
     cur->val = value;
@@ -197,6 +197,7 @@ void Sequence::setup()
 
 int subsequence(const Sequence &seq1, const Sequence &seq2)
 {
+    if(seq2.empty()) return -1;
     for(int i=0; i<seq1.size(); i++){
         int ti = i;
         bool found = true;
@@ -218,17 +219,20 @@ int subsequence(const Sequence &seq1, const Sequence &seq2)
 
 void zipper(const Sequence &seq1, const Sequence &seq2, Sequence &result)
 {
+    Sequence tempRes;
+
     int ptr1 = 0, ptr2 = 0;
     int curPos = 0;
     ItemType curValue;
     while(ptr1 < seq1.size() || ptr2 < seq2.size()){
         if(ptr1 < seq1.size()){
             seq1.get(ptr1++, curValue);
-            result.insert(curPos++, curValue);
+            tempRes.insert(curPos++, curValue);
         }
         if(ptr2 < seq2.size()){
             seq2.get(ptr2++, curValue);
-            result.insert(curPos++, curValue);
+            tempRes.insert(curPos++, curValue);
         }   
     }
+    result = tempRes;
 }
