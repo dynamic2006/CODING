@@ -77,6 +77,7 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
     }
     // cout << "ERE" << endl;
     if(openPars > 0) return 1;
+    if(!isdigit(prev) && prev != ')') return 1;
 
     //build postfix
     while(!acc.empty()){
