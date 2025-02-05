@@ -12,7 +12,6 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
     int openPars = 0;
     stack<char> acc;
 
-    cout << "HERE" << endl;
     for(int i=0; i<infix.size(); i++){
         char c = infix[i];
         if(c == ' ') continue;
@@ -24,13 +23,11 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
         }
         switch(c){
             case '(':
-                cout << "OPENPAR" << endl;
                 if(prev != '(' && prev != '!' && prev != '&' && prev != '|') return 1;
                 openPars++;
                 acc.push(c);
                 break;
             case ')':
-                cout << "CLOSEPAR" << endl;
                 if(!isdigit(prev) && prev != ')') return 1;
                 if(openPars <= 0) return 1;
                 openPars--;
@@ -41,18 +38,16 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
                 acc.pop();
                 break;
             case '!':
-                cout << "EXCLAM" << endl;
                 if(prev != '(' && prev != '!' && prev != '&' && prev != '|') return 1;
                 //NOTE: USING OPPOSITE: c >= stack top using ASCII
                 //MAY NOT WORK, CHECK THIS!!!
-                while(!acc.empty() && acc.top() != '(' && c >= acc.top()){
+                while(!acc.empty() && acc.top() != '(' && c > acc.top()){
                     postfix += acc.top();
                     acc.pop();
                 }
                 acc.push(c);
                 break;
             case '&':
-                cout << "AMPERSAND" << endl;
                 if(prev != ')' && !isdigit(prev)) return 1;
                 while(!acc.empty() && acc.top() != '(' && c >= acc.top()){
                     postfix += acc.top();
@@ -61,7 +56,6 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
                 acc.push(c);
                 break;
             case '|':
-                cout << "OR" << endl;
                 if(prev != ')' && !isdigit(prev)) return 1;
                 while(!acc.empty() && acc.top() != '(' && c >= acc.top()){
                     postfix += acc.top();
@@ -70,21 +64,20 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
                 acc.push(c);
                 break;
             default:
-                cout << "WTF" << endl;
                 return 1;
         }
         prev = c;
     }
-    // cout << "ERE" << endl;
     if(openPars > 0) return 1;
     if(!isdigit(prev) && prev != ')') return 1;
 
     //build postfix
+    // cout << "PREPOSTFIX " << postfix << endl;
     while(!acc.empty()){
         postfix += acc.top();
         acc.pop();
     }
-    cout << "POSTFIX " << postfix << endl;
+    cout << "VALID INFIX OF " << infix << " CONVERTED TO POSTFIX " << postfix << endl;
 
     //evaluate postfix expression
     stack<bool> operands;
@@ -109,7 +102,7 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
             
         }
     }
-    cout << "SIZE " << operands.size() << endl;
+
     if(operands.size() == 1){
         result = operands.top(); operands.pop();
         return 0;
@@ -126,11 +119,20 @@ int main()
     string pf;
     bool answer;
     evaluate("2| 3", ba, pf, answer);
+    assert(evaluate("", ba, pf, answer) == 1); //testing empty string
+    assert(evaluate("   ", ba, pf, answer) == 1); //testing string with only blanks
     assert(evaluate("2| 3", ba, pf, answer) == 0  &&  pf == "23|" &&  answer);
     assert(evaluate("", ba, pf, answer) == 1);
     assert(evaluate("8|", ba, pf, answer) == 1);
-    cout << "OK" << endl;
     assert(evaluate(" &6", ba, pf, answer) == 1);
+    assert(evaluate("8&&6", ba, pf, answer) == 1); //testing double and
+    assert(evaluate("8||6", ba, pf, answer) == 1); //testing double or
+    assert(evaluate("8!!6", ba, pf, answer) == 1); //testing double exclam
+    assert(evaluate("8!&6", ba, pf, answer) == 1); //testing exclam before and
+    assert(evaluate("8&!6", ba, pf, answer) == 0 && !answer); //testing exclam after and
+    assert(evaluate("4 5", ba, pf, answer) == 1 && !answer); //testing if answer is reset for invalid
+    assert(evaluate("8&&&6", ba, pf, answer) == 1); //testing triple and
+    assert(evaluate("!!!!6", ba, pf, answer) == 0 && answer); //testing just exclams
     assert(evaluate("4 5", ba, pf, answer) == 1);
     assert(evaluate("01", ba, pf, answer) == 1);
     assert(evaluate("()", ba, pf, answer) == 1);
@@ -153,3 +155,6 @@ int main()
     assert(evaluate("2| 3", ba, pf, answer) == 0  &&  pf == "23|" &&  !answer);
     cout << "Passed all tests" << endl;
 }
+
+//MAKE SURE TO ESP TEST THE EXCLAMATION POINT
+//SINCE THAT IS A UNARY OPERATOR IT MUST BE HANDLED CAREFULLY!!!
