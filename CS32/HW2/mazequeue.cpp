@@ -6,12 +6,12 @@ using namespace std;
 class Coord
 {
     public:
-    Coord(int r, int c) : m_row(r), m_col(c) {}
-    int r() const { return m_row; }
-    int c() const { return m_col; }
+        Coord(int r, int c) : m_row(r), m_col(c) {}
+        int r() const { return m_row; }
+        int c() const { return m_col; }
     private:
-    int m_row;
-    int m_col;
+        int m_row;
+        int m_col;
 };
 
 bool pathExists(string maze[], int nRows, int nCols, int sr, int sc, int er, int ec)
