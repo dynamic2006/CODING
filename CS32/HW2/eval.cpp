@@ -143,7 +143,26 @@ int main()
     assert(evaluate("!(7|8)", ba, pf, answer) == 0 && !answer); //given tc
     assert(evaluate("!7|8", ba, pf, answer) == 0 && answer); //given tc
     assert(evaluate("6|4&5", ba, pf, answer) == 0 && answer); //given tc
+    assert(evaluate("!()", ba, pf, answer) == 1); //just exclam with paras
+    assert(evaluate("!!!0&1", ba, pf, answer) == 0 && !answer); //testing precedence
     assert(evaluate("1&!(9|1&1|9) | !!!(9&1&9)", ba, pf, answer) == 0 && answer); //given test case
+    assert(evaluate("!(!(!(!6)))", ba, pf, answer) == 0 && answer); //testing exclam with paras
+    assert(evaluate("!(1&2&3&4)", ba, pf, answer) == 0 && answer); //testing multiple ands
+    assert(evaluate("!1&2&3&4", ba, pf, answer) == 0 && !answer); //same test as before wo para
+    assert(evaluate("!(!(!!6 & 6 &   8))  | ((8))", ba, pf, answer) == 0); //created tc
+    assert(evaluate("   !!!6   ", ba, pf, answer) == 0 && !answer); //created tc
+    assert(evaluate("6&7&!!!6", ba, pf, answer) == 0 && !answer); //tc
+    assert(evaluate("6&0|!!!6", ba, pf, answer) == 0 && answer); //tc
+    assert(evaluate("6&0|!!!!!!7", ba, pf, answer) == 0 && answer); //tc
+    assert(evaluate(")(!6)", ba, pf, answer) == 1); //tc
+    assert(evaluate("(!6))", ba, pf, answer) == 1); //tc
+    assert(evaluate("((!6)", ba, pf, answer) == 1); //tc
+    assert(evaluate("!(6&6&6&6)", ba, pf, answer) == 0 && !answer); //tc
+    assert(evaluate("!6&6&6&6", ba, pf, answer) == 0 && !answer); //tc
+    assert(evaluate("!6|6&6|6", ba, pf, answer) == 0); //tc
+    assert(evaluate("!(6|6)&6|6", ba, pf, answer) == 0); //tc
+    assert(evaluate("(!6|6)&6|6", ba, pf, answer) == 0 && answer); //tc
+    assert(evaluate(" ! ! 6 & ! ! 7 ", ba, pf, answer) == 0 && !answer); //tc
     assert(evaluate("4 5", ba, pf, answer) == 1);
     assert(evaluate("01", ba, pf, answer) == 1);
     assert(evaluate("()", ba, pf, answer) == 1);
