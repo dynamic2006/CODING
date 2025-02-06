@@ -163,6 +163,9 @@ int main()
     assert(evaluate("!(6|6)&6|6", ba, pf, answer) == 0); //tc
     assert(evaluate("(!6|6)&6|6", ba, pf, answer) == 0 && answer); //tc
     assert(evaluate(" ! ! 6 & ! ! 7 ", ba, pf, answer) == 0 && !answer); //tc
+    assert(evaluate("!!", ba, pf, answer) == 1);
+    assert(evaluate("!(!)", ba, pf, answer) == 1);
+    assert(evaluate("(!!)", ba, pf, answer) == 1);
     assert(evaluate("4 5", ba, pf, answer) == 1);
     assert(evaluate("01", ba, pf, answer) == 1);
     assert(evaluate("()", ba, pf, answer) == 1);
