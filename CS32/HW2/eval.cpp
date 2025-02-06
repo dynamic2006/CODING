@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <stack>
-#include <cassert>
 using namespace std;
 
 int evaluate(string infix, const bool values[], string& postfix, bool& result)
@@ -77,7 +76,7 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
         postfix += acc.top();
         acc.pop();
     }
-    cout << "VALID INFIX OF " << infix << " CONVERTED TO POSTFIX " << postfix << endl;
+    // cout << "VALID INFIX OF " << infix << " CONVERTED TO POSTFIX " << postfix << endl;
 
     //evaluate postfix expression
     stack<bool> operands;
@@ -109,86 +108,3 @@ int evaluate(string infix, const bool values[], string& postfix, bool& result)
     }
     return 1;
 }
-
-int main()
-{
-    bool ba[10] = {
-        //  0      1      2      3      4      5      6      7      8      9
-        true,  true,  true,  false, false, false, true,  false, true,  false
-    };
-    string pf;
-    bool answer;
-    evaluate("2| 3", ba, pf, answer);
-    assert(evaluate("", ba, pf, answer) == 1); //testing empty string
-    assert(evaluate("   ", ba, pf, answer) == 1); //testing string with only blanks
-    assert(evaluate("2| 3", ba, pf, answer) == 0  &&  pf == "23|" &&  answer);
-    assert(evaluate("", ba, pf, answer) == 1);
-    assert(evaluate("8|", ba, pf, answer) == 1);
-    assert(evaluate(" &6", ba, pf, answer) == 1);
-    assert(evaluate("8&&6", ba, pf, answer) == 1); //testing double and
-    assert(evaluate("8||6", ba, pf, answer) == 1); //testing double or
-    assert(evaluate("8!!6", ba, pf, answer) == 1); //testing double exclam
-    assert(evaluate("8!&6", ba, pf, answer) == 1); //testing exclam before and
-    assert(evaluate("8&!6", ba, pf, answer) == 0 && !answer); //testing exclam after and
-    assert(evaluate("4 5", ba, pf, answer) == 1 && !answer); //testing if answer is reset for invalid
-    assert(evaluate("8&&&6", ba, pf, answer) == 1); //testing triple and
-    assert(evaluate("!!!!6", ba, pf, answer) == 0 && answer); //testing just exclams
-    assert(evaluate("(!!!!)6", ba, pf, answer) == 1 && answer); //testing exclams with parantheses (?)
-    assert(evaluate("2&!2", ba, pf, answer) == 0 && !answer); //testing logic
-    assert(evaluate("2|!2", ba, pf, answer) == 0 && answer); //testing logic
-    assert(evaluate("2", ba, pf, answer) == 0 && answer); //given tc
-    assert(evaluate("(3)", ba, pf, answer) ==  0 && !answer); //given tc
-    assert(evaluate("2&(3)", ba, pf, answer) == 0 && !answer); //given tc
-    assert(evaluate("0 & !9", ba, pf, answer) == 0 && answer); //given tc
-    assert(evaluate("!(7|8)", ba, pf, answer) == 0 && !answer); //given tc
-    assert(evaluate("!7|8", ba, pf, answer) == 0 && answer); //given tc
-    assert(evaluate("6|4&5", ba, pf, answer) == 0 && answer); //given tc
-    assert(evaluate("!()", ba, pf, answer) == 1); //just exclam with paras
-    assert(evaluate("!!!0&1", ba, pf, answer) == 0 && !answer); //testing precedence
-    assert(evaluate("1&!(9|1&1|9) | !!!(9&1&9)", ba, pf, answer) == 0 && answer); //given test case
-    assert(evaluate("!(!(!(!6)))", ba, pf, answer) == 0 && answer); //testing exclam with paras
-    assert(evaluate("!(1&2&3&4)", ba, pf, answer) == 0 && answer); //testing multiple ands
-    assert(evaluate("!1&2&3&4", ba, pf, answer) == 0 && !answer); //same test as before wo para
-    assert(evaluate("!(!(!!6 & 6 &   8))  | ((8))", ba, pf, answer) == 0); //created tc
-    assert(evaluate("   !!!6   ", ba, pf, answer) == 0 && !answer); //created tc
-    assert(evaluate("6&7&!!!6", ba, pf, answer) == 0 && !answer); //tc
-    assert(evaluate("6&0|!!!6", ba, pf, answer) == 0 && answer); //tc
-    assert(evaluate("6&0|!!!!!!7", ba, pf, answer) == 0 && answer); //tc
-    assert(evaluate(")(!6)", ba, pf, answer) == 1); //tc
-    assert(evaluate("(!6))", ba, pf, answer) == 1); //tc
-    assert(evaluate("((!6)", ba, pf, answer) == 1); //tc
-    assert(evaluate("!(6&6&6&6)", ba, pf, answer) == 0 && !answer); //tc
-    assert(evaluate("!6&6&6&6", ba, pf, answer) == 0 && !answer); //tc
-    assert(evaluate("!6|6&6|6", ba, pf, answer) == 0); //tc
-    assert(evaluate("!(6|6)&6|6", ba, pf, answer) == 0); //tc
-    assert(evaluate("(!6|6)&6|6", ba, pf, answer) == 0 && answer); //tc
-    assert(evaluate(" ! ! 6 & ! ! 7 ", ba, pf, answer) == 0 && !answer); //tc
-    assert(evaluate("!!", ba, pf, answer) == 1);
-    assert(evaluate("!(!)", ba, pf, answer) == 1);
-    assert(evaluate("(!!)", ba, pf, answer) == 1);
-    assert(evaluate("4 5", ba, pf, answer) == 1);
-    assert(evaluate("01", ba, pf, answer) == 1);
-    assert(evaluate("()", ba, pf, answer) == 1);
-    assert(evaluate("()4", ba, pf, answer) == 1);
-    assert(evaluate("2(9|8)", ba, pf, answer) == 1);
-    assert(evaluate("2(&8)", ba, pf, answer) == 1);
-    assert(evaluate("(6&(7|7)", ba, pf, answer) == 1);
-    assert(evaluate("x+5", ba, pf, answer) == 1);
-    assert(evaluate("2|3|4", ba, pf, answer) == 0
-                            &&  pf == "23|4|"  &&  answer);
-    assert(evaluate("2|(3|4)", ba, pf, answer) == 0
-                            &&  pf == "234||"  &&  answer);
-    assert(evaluate("4  |  !3 & (0&3) ", ba, pf, answer) == 0
-                            &&  pf == "43!03&&|"  &&  !answer);
-    assert(evaluate(" 9  ", ba, pf, answer) == 0  &&  pf == "9"  &&  !answer);
-    assert(evaluate("((6))", ba, pf, answer) == 0  &&  pf == "6"  &&  answer);
-    ba[2] = false;
-    ba[9] = true;
-    assert(evaluate("((9))", ba, pf, answer) == 0  &&  pf == "9"  &&  answer);
-    assert(evaluate("2| 3", ba, pf, answer) == 0  &&  pf == "23|" &&  !answer);
-    cout << "Passed all tests" << endl;
-}
-
-//MAKE SURE TO ESP TEST THE EXCLAMATION POINT
-//SINCE THAT IS A UNARY OPERATOR IT MUST BE HANDLED CAREFULLY!!!
-//ALSO THERE ARE STILL (ATLEAST ONE) COUT STATEMENT IN THE EVAL FUNC -- REMOVE THIS BEFORE SUBMITTING!!!
