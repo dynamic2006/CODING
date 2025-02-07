@@ -6,20 +6,20 @@ typedef long long ll;
 
 struct Segtree
 {
-    static constexpr int unit = 0;
-    int f(int a, int b){return a+b;}
+    static constexpr ll unit = 0;
+    ll f(ll a, ll b){return a+b;}
 
-    vector<int> s; int n;
-    Segtree(int n=0, int def=unit):s(2*n, def), n(n){}
+    vector<ll> s; ll n;
+    Segtree(ll n=0, ll def=unit):s(2*n, def), n(n){}
 
-    void update(int pos, int val){
+    void update(ll pos, ll val){
         for(s[pos+=n]=val; pos/=2;){
             s[pos] = f(s[pos*2], s[pos*2+1]);
         }
     }
 
-    int query(int b, int e){
-        int ra = unit, rb = unit;
+    ll query(ll b, ll e){
+        ll ra = unit, rb = unit;
         for(b+=n, e+=n; b<e; b/=2, e/=2){
             if(b%2) ra = f(ra, s[b++]);
             if(e%2) rb = f(s[--e], rb);
@@ -28,15 +28,14 @@ struct Segtree
     }
 };
 
-void dfs(int cur, int prev, vector<vector<int>>& adj, vector<pair<int, int>>& times, vector<int>& preorder)
+void dfs(ll cur, ll prev, vector<vector<ll>>& adj, vector<ll>& times, vector<ll>& preorder)
 {
-    times[cur].first = preorder.size();
     preorder.push_back(cur);
     for(auto& next : adj[cur]){
         if(next == prev) continue;
         dfs(next, cur, adj, times, preorder);
     }
-    times[cur].second = preorder.size();
+    times[cur] = preorder.size();
 }
 
 int main() {
@@ -44,43 +43,43 @@ int main() {
     cin.tie(0);
     cout.tie(0);
 
-    freopen("input.in", "r", stdin);
+    // freopen("input.in", "r", stdin);
 
-    int n, q; cin >> n >> q;
-    vector<int> values(n);
-    for(int i=0; i<n; i++) cin >> values[i];
+    ll n, q; cin >> n >> q;
+    vector<ll> values(n);
+    for(ll i=0; i<n; i++) cin >> values[i];
 
-    vector<vector<int>> adj(n, vector<int>());
-    for(int i=0; i<n-1; i++){
-        int a, b; cin >> a >> b; a--; b--;
+    vector<vector<ll>> adj(n, vector<ll>());
+    for(ll i=0; i<n-1; i++){
+        ll a, b; cin >> a >> b; a--; b--;
         adj[a].push_back(b);
         adj[b].push_back(a);
     }
 
     //preorder trav
     Segtree seg(n);
-    vector<pair<int, int>> times(n);
-    vector<int> preorder;
+    vector<ll> times(n);
+    vector<ll> preorder;
     dfs(0, -1, adj, times, preorder);
 
     //DEBUGGING
-    // for(int i=0; i<n; i++){
+    // for(ll i=0; i<n; i++){
     //     cout << i <<  " " << times[i].first << " " << times[i].second << endl;
     // }
 
     //times array is filled
     //now init segtree
-    for(int i=0; i<n; i++){
+    for(ll i=0; i<n; i++){
         seg.update(i, values[preorder[i]]);
     }
 
-    map<int, int> comp;
-    for(int i=0; i<n; i++) comp[preorder[i]] = i;
+    map<ll, ll> comp;
+    for(ll i=0; i<n; i++) comp[preorder[i]] = i;
 
     //answer queries
-    for(int i=0; i<q; i++){
-        int op; cin >> op;
-        int s, x;
+    for(ll i=0; i<q; i++){
+        ll op; cin >> op;
+        ll s, x;
         switch(op){
             case 1:
                 cin >> s >> x; s--;
@@ -88,7 +87,7 @@ int main() {
                 break;
             case 2:
                 cin >> s; s--;
-                cout << seg.query(comp[s], times[s].second) << endl;
+                cout << seg.query(comp[s], times[s]) << endl;
                 break;
         }
     }
