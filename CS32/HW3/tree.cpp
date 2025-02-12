@@ -1,8 +1,3 @@
-#include <iostream>
-#include <string>
-#include <cassert>
-using namespace std;
-
 // Return the number of ways that all n1 elements of a1 appear in
     // the n2 element array a2 in the same order (though not necessarily
     // consecutively).  We decree that the empty sequence (i.e. one where
@@ -95,37 +90,4 @@ void order(double a[], int n)
     
     order(a, x);
     order(a+y, n-y);
-}
-
-int main()
-{
-    double ref[] = {-1, -3.52, 5, -1, 2.1, 3, -1, 2.1, 0, 3};
-    double other[] = {-1, 2.1, 3};
-
-    //countIsIn checks
-    assert(countIsIn(other, 0, ref, 0) == 1 && countIsIn(other, 0, ref, 1) == 1);
-    assert(countIsIn(other, 1, ref, 0) == 0 && countIsIn(other, 1, ref, 1) == 1);
-    assert(countIsIn(other, 2, ref, 7) == 2 && countIsIn(other, 2, ref, 10) == 5);
-    assert(countIsIn(other, 3, ref, 10) == 7);
-
-    //order checks
-    double a[] = {};
-    double b[] = {-3.52, -5.6, 1.71, 2.8746, 5, 2, -4.38};
-
-    order(a, -1);
-    order(b, -1);
-
-    order(a, 0);
-    order(b, 0);
-    for(int i=0; i<7; i++) cout << b[i] << " ";
-    cout << endl;
-
-    order(b, 3);
-    for(int i=0; i<7; i++) cout << b[i] << " ";
-    cout << endl;
-
-    order(b, 7);
-    for(int i=0; i<7; i++) cout << b[i] << " ";
-    cout << endl;
-
 }

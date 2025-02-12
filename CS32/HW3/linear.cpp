@@ -1,11 +1,3 @@
-#include <iostream>
-#include <cassert>
-using namespace std;
-
-bool somePredicate(double x)
-{
-    return x > 0;
-}
     // Return true if the somePredicate function returns true for at
     // least one of the array elements; return false otherwise.
 bool anyTrue(const double a[], int n)
@@ -73,47 +65,4 @@ bool isIn(const double a1[], int n1, const double a2[], int n2)
 
     if(*a2 == *a1) return isIn(a1+1, n1-1, a2+1, n2-1);
     return isIn(a1, n1, a2+1, n2-1);
-}
-
-int main()
-{
-    //reference arrays
-    double ref1[] = {-1, 0, -4, 2, 3, -1, 8}; //7
-    double ref2[] = {};
-    double ref3[] = {-1, -1, -1};
-    
-    //anyTrue checks
-    assert(anyTrue(ref1, 7));
-    assert(!anyTrue(ref2, 0));
-    assert(!anyTrue(ref1, -1) && !anyTrue(ref2, -1));
-    assert(!anyTrue(ref3, 3) && !anyTrue(ref1, 0));
-    
-    //countTrue checks
-    assert(countTrue(ref1, 0) == 0 && countTrue(ref1, 2) == 0);
-    assert(countTrue(ref1, 4) == 1 && countTrue(ref1, 7) == 3);
-    assert(countTrue(ref2, 0) == 0 && countTrue(ref2, -1) == 0);
-    assert(countTrue(ref3, -1) == 0 && countTrue(ref3, 3) == 0);
-
-    //firstTrue checks
-    assert(firstTrue(ref1, 0) == -1 && firstTrue(ref1, -1) == -1);
-    assert(firstTrue(ref1, 4) == 3 && firstTrue(ref1, 7) == 3);
-    assert(firstTrue(ref2, 0) == -1 && firstTrue(ref2, -1) == -1);
-    assert(firstTrue(ref3, 0) == -1 && firstTrue(ref3, 3) == -1);
-
-    //positionOfMininum checks
-    assert(positionOfMinimum(ref1, 0) == -1 && positionOfMinimum(ref1, -1) == -1);
-    assert(positionOfMinimum(ref1, 2) == 0 && positionOfMinimum(ref1, 3) == 2);
-    assert(positionOfMinimum(ref1, 7) == 2 && positionOfMinimum(ref1, 4) == 2);
-    assert(positionOfMinimum(ref2, 0) == -1 && positionOfMinimum(ref2, -1) == -1);
-    assert(positionOfMinimum(ref3, 0) == -1 && positionOfMinimum(ref3, 1) == 0);
-    assert(positionOfMinimum(ref3, 2) == 0 && positionOfMinimum(ref3, 3) == 0);
-
-    // isIn checks
-    assert(isIn(ref2, 0, ref1, 7) && isIn(ref2, 0, ref1, 0));
-    assert(isIn(ref2, 0, ref1, -1) && isIn(ref2, -1, ref1, -1));
-    assert(isIn(ref3, 0, ref1, 7) && isIn(ref3, 1, ref1, 7));
-    assert(isIn(ref3, 2, ref1, 7) && !isIn(ref3, 3, ref1, 7));
-
-    cout << "PASSED ALL TESTCASES =D" << endl;
-
 }
