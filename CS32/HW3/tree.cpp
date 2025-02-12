@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cassert>
 using namespace std;
 
 // Return the number of ways that all n1 elements of a1 appear in
@@ -98,15 +99,33 @@ void order(double a[], int n)
 
 int main()
 {
-    double a2[] = {10, 50, 40, 20, 50, 40, 30};
-    double a1[] = {50, 40, 30, 1, 1, 1, 1, 1, 1, 1};
+    double ref[] = {-1, -3.52, 5, -1, 2.1, 3, -1, 2.1, 0, 3};
+    double other[] = {-1, 2.1, 3};
 
-    cout << countIsIn(a1, 10, a2, 7) << endl;
+    //countIsIn checks
+    assert(countIsIn(other, 0, ref, 0) == 1 && countIsIn(other, 0, ref, 1) == 1);
+    assert(countIsIn(other, 1, ref, 0) == 0 && countIsIn(other, 1, ref, 1) == 1);
+    assert(countIsIn(other, 2, ref, 7) == 2 && countIsIn(other, 2, ref, 10) == 5);
+    assert(countIsIn(other, 3, ref, 10) == 7);
 
-    double a3[] = {10, 50, 40, 20, 50, 40, 30};
-    order(a3, 7);
-    order({}, 0);
+    //order checks
+    double a[] = {};
+    double b[] = {-3.52, -5.6, 1.71, 2.8746, 5, 2, -4.38};
 
-    for(int i=0; i<7; i++) cout << a3[i] << endl;
+    order(a, -1);
+    order(b, -1);
+
+    order(a, 0);
+    order(b, 0);
+    for(int i=0; i<7; i++) cout << b[i] << " ";
+    cout << endl;
+
+    order(b, 3);
+    for(int i=0; i<7; i++) cout << b[i] << " ";
+    cout << endl;
+
+    order(b, 7);
+    for(int i=0; i<7; i++) cout << b[i] << " ";
+    cout << endl;
 
 }
